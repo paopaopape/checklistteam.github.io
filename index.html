@@ -4131,7 +4131,7 @@ async function enterApp(){
     renderDash();
     renderCheck();
     renderUploadStatus();
-    // ผู้จัดการ (View only) ให้เริ่มที่แดชบอร์ดเสมอ ป้องกันค้างอยู่หน้าที่เข้าไม่ได้จากเซสชันก่อน
+    // ผู้จัดการ (View only) ให้เริ่มที่แดชบอร์ดเสมอ ป้องกันค้างอยู่หน้าที่เข้าไม่ได้จากเซสชันก่อน 
     if(!canAccessPage(document.querySelector('#nav button.active')?.dataset.page)) goPage('dash');
   } finally {
     hideLoading(); // ปิดหน้าโหลดเสมอ แม้ระหว่างทางจะมี error
