@@ -170,6 +170,9 @@
   }
   table.matrix tr:hover td.detail{background:#fafbf9}
   table.matrix td.code{font-size:11px;color:var(--muted);padding:8px 10px;white-space:nowrap}
+  table.matrix th.col-owner{text-align:left;padding-left:10px;min-width:130px;white-space:nowrap}
+  table.matrix td.m-owner{font-size:12px;color:var(--ink-soft);padding:8px 10px;white-space:nowrap;border-right:2px solid var(--line)}
+  .ck td.owner-cell{min-width:140px}
   table.matrix td.mcell{width:56px;height:34px;text-align:center;cursor:pointer;transition:.1s;position:relative}
   table.matrix td.mcell:hover{outline:2px solid var(--accent);outline-offset:-2px;z-index:2}
   td.mcell.ok{background:var(--green);color:#fff;font-weight:700;font-size:11px;position:relative}
@@ -183,12 +186,18 @@
   td.mcell.submitted{background:#f5a524;color:#fff;font-weight:700;font-size:10.5px;cursor:pointer;position:relative}
   td.mcell.submitted:hover{background:#e0921a;outline:2px solid #fff;outline-offset:-2px}
   td.mcell.submitted .ok-lbl{font-weight:700}
+  td.mcell.rejected{background:var(--red);color:#fff;font-weight:700;font-size:10.5px;cursor:pointer;position:relative}
+  td.mcell.rejected:hover{background:#c0392b;outline:2px solid #fff;outline-offset:-2px}
   td.mcell.empty{background:#fff}
   td.mcell.na{background:repeating-linear-gradient(45deg,#f0f1ee,#f0f1ee 4px,#e8eae6 4px,#e8eae6 8px)}
+  .ckbox.na{background:repeating-linear-gradient(45deg,#f0f1ee,#f0f1ee 4px,#e8eae6 4px,#e8eae6 8px);border-color:var(--line)}
+  table.ck tr.is-na td{opacity:.6}
+  .na-chip{font-size:10.5px;font-weight:700;color:#8a8f7a;background:#eef0ea;border-radius:5px;padding:2px 6px;margin-left:6px;letter-spacing:.02em}
   .mgr-flag{position:absolute;top:-5px;right:-5px;width:15px;height:15px;border-radius:50%;background:#e0362e;color:#fff;display:grid;place-items:center;box-shadow:0 1px 3px rgba(0,0,0,.3);z-index:4;border:1.5px solid #fff}
   .mgr-flag svg{width:9px;height:9px}
   .ckbox.submitted{background:#f5a524;border-color:#f5a524}
   .ckbox.submitted svg{opacity:1}
+  .ckbox.rejected{background:var(--red);border-color:var(--red)}
   .status-chip.submitted{background:#fef1dc;color:#c17608}
   .matrix-legend{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:14px 2px 0;font-size:12.5px;color:var(--ink-soft)}
   .matrix-legend .lg{display:flex;align-items:center;gap:7px}
@@ -205,9 +214,10 @@
     border-bottom:2.5px solid transparent;border-radius:6px 6px 0 0;display:flex;align-items:center;gap:8px;transition:.12s;
   }
   .tabs button:hover{background:var(--paper);color:var(--ink)}
-  .tabs button.active{color:var(--accent);border-bottom-color:var(--accent)}
+  .tabs button.active{color:#fff;background:var(--accent);border-bottom-color:var(--accent);font-weight:750;box-shadow:0 3px 10px rgba(0,0,0,.14)}
+  .tabs button.active:hover{color:#fff;background:var(--accent)}
   .tabs button .cnt{background:#eceee9;color:var(--slate);font-size:11px;font-weight:700;padding:1px 7px;border-radius:10px}
-  .tabs button.active .cnt{background:var(--accent-soft);color:var(--accent)}
+  .tabs button.active .cnt{background:rgba(255,255,255,.28);color:#fff}
 
   table.ck{width:100%;border-collapse:collapse;font-size:13.5px}
   table.ck th{
@@ -274,6 +284,7 @@
   .issue-list .ih{background:var(--red-bg);padding:10px 15px;font-weight:650;color:var(--red);font-size:13px;display:flex;align-items:center;gap:8px}
   .issue-row{display:grid;grid-template-columns:120px 1fr 150px;gap:12px;padding:9px 15px;border-top:1px solid var(--line);font-size:12.5px;align-items:center}
   .issue-row .sev{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:5px;text-align:center}
+  .sev{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:6px;text-align:center;white-space:nowrap}
   .sev.error{background:var(--red-bg);color:var(--red)}
   .sev.warn{background:var(--amber-bg);color:var(--amber)}
 
@@ -283,6 +294,96 @@
   table.tb-preview td.num{text-align:right;font-variant-numeric:tabular-nums}
   table.tb-preview tr.flag td{background:var(--red-bg)}
   .neg{color:var(--red)}
+  /* ===== TB issue detail table (dashboard) ===== */
+  .tbd-filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+  .tbd-fbtn{padding:6px 13px;border-radius:8px;font-size:12.5px;font-weight:650;color:var(--ink-soft);background:#fff;border:1px solid var(--line);display:flex;align-items:center;gap:7px;transition:.12s}
+  .tbd-fbtn span{font-size:11px;font-weight:700;background:#eceee9;color:var(--slate);padding:1px 7px;border-radius:10px}
+  .tbd-fbtn:hover{background:var(--paper)}
+  .tbd-fbtn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .tbd-fbtn.active span{background:rgba(255,255,255,.28);color:#fff}
+  .tbd-fbtn.err.active{background:var(--red);border-color:var(--red)}
+  .tbd-fbtn.warn.active{background:var(--amber);border-color:var(--amber)}
+  .tbd-search{margin-left:auto;min-width:220px;flex:1;max-width:340px;padding:7px 12px;border:1px solid var(--line);border-radius:8px;font-size:13px;background:#fff}
+  .tbd-search:focus{outline:none;border-color:var(--accent)}
+  .tbd-scroll{max-height:440px;overflow:auto;border:1px solid var(--line);border-radius:9px}
+  table.tbd-table{width:100%;border-collapse:collapse;font-size:12.5px}
+  table.tbd-table th{position:sticky;top:0;z-index:1;text-align:left;padding:9px 12px;background:var(--paper);color:var(--muted);font-size:11px;text-transform:uppercase;font-weight:700;border-bottom:1.5px solid var(--line);white-space:nowrap}
+  table.tbd-table td{padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.tbd-table tr:hover td{background:var(--paper)}
+  table.tbd-table td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;font-family:"SF Mono",ui-monospace,monospace}
+  table.tbd-table td.num.neg{color:var(--red)}
+  table.tbd-table td.mono{font-family:"SF Mono",ui-monospace,monospace;white-space:nowrap;color:var(--ink)}
+  .tbd-msg{color:var(--ink-soft);min-width:220px}
+  table.tbd-table td.tbd-note{min-width:200px}
+  .tbd-note-input{width:100%;min-width:180px;padding:6px 9px;border:1px solid var(--line);border-radius:6px;font-family:inherit;font-size:12.5px;background:#fff}
+  .tbd-note-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .tbd-note-input::placeholder{color:var(--muted)}
+  .tbd-note-ro{font-size:12.5px;color:var(--ink)}
+  /* ===== KPI per-person ===== */
+  table.kpi-table td{vertical-align:middle}
+  .kpi-row-click:hover td{background:var(--paper)}
+  .kpi-bar{display:inline-block;width:120px;height:8px;border-radius:5px;background:#eceee9;overflow:hidden;vertical-align:middle;margin-right:8px}
+  .kpi-bar i{display:block;height:100%;border-radius:5px}
+  .kpi-bar i.ok{background:var(--green)}
+  .kpi-bar i.mid{background:#f5a524}
+  .kpi-bar i.lo{background:var(--red)}
+  .kpi-pct{font-size:12px;font-weight:700;color:var(--ink-soft);vertical-align:middle}
+  /* ===== Due date (กำหนดส่ง) — โทนพาสเทล ===== */
+  .due-badge{display:inline-flex;align-items:center;gap:3px;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:6px;white-space:nowrap;vertical-align:middle;letter-spacing:.01em}
+  .due-badge.due-overdue{background:#FCE8E8;color:#C0392B}
+  .due-badge.due-near{background:#FEF3DC;color:#B4790C}
+  .due-badge.due-upcoming{background:#EAF2FB;color:#3A6EA5}
+  .due-badge.due-done{background:#E7F4EC;color:#2FA96A}
+  .due-chip{font-size:10.5px;font-weight:700;padding:1px 8px;border-radius:10px}
+  .due-chip.due-overdue{background:#FCE8E8;color:#C0392B}
+  .due-chip.due-near{background:#FEF3DC;color:#B4790C}
+  .cat-card.warn-overdue{border-color:#F0B9B4;box-shadow:0 0 0 1px #F7D4D0 inset,var(--shadow)}
+  .cat-card.warn-near{border-color:#F3DCA6;box-shadow:0 0 0 1px #FBEBC4 inset,var(--shadow)}
+  /* ===== Calendar ===== */
+  .cal-legend{display:inline-flex;align-items:center;gap:4px}
+  .cal-legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+  .cal-legend i.due-overdue{background:#F2B6B0}
+  .cal-legend i.due-near{background:#F6DDA0}
+  .cal-legend i.due-upcoming{background:#BBD4EE}
+  .cal-legend i.due-done{background:#B7E0C6}
+  .cal-head{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:8px}
+  .cal-head div{text-align:center;font-size:12px;font-weight:700;color:var(--muted)}
+  .cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+  .cal-cell{min-height:74px;border:1px solid var(--line);border-radius:9px;padding:7px 8px;background:#fff;display:flex;flex-direction:column;gap:6px}
+  .cal-cell.empty{border:none;background:transparent}
+  .cal-cell.has{cursor:pointer;transition:.12s}
+  .cal-cell.has:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.08)}
+  .cal-cell .cal-d{font-size:13px;font-weight:700;color:var(--ink-soft)}
+  .cal-cell.today .cal-d{background:var(--accent);color:#fff;width:24px;height:24px;border-radius:50%;display:grid;place-items:center}
+  .cal-cell .cal-count{font-size:11px;font-weight:700;padding:2px 6px;border-radius:6px;align-self:flex-start}
+  .cal-cell .cal-stwrap{display:flex;flex-direction:column;gap:2px;margin-top:-2px}
+  .cal-cell .cal-st{font-size:10px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .cal-cell .cal-st b{font-weight:800}
+  .cal-cell.due-overdue{background:#FCE8E8;border-color:#F0B9B4} .cal-cell.due-overdue .cal-count{background:#F2B6B0;color:#8f2a20}
+  .cal-cell.due-near{background:#FEF7E8;border-color:#F3DCA6} .cal-cell.due-near .cal-count{background:#F6DDA0;color:#8a5c08}
+  .cal-cell.due-upcoming{background:#F2F7FD;border-color:#CBDDF1} .cal-cell.due-upcoming .cal-count{background:#BBD4EE;color:#2e5a86}
+  .cal-cell.due-done{background:#EEF7F1;border-color:#C7E6D3} .cal-cell.due-done .cal-count{background:#B7E0C6;color:#227048}
+  @media(max-width:700px){ .cal-cell{min-height:56px;padding:5px} .cal-cell .cal-count{font-size:10px} .cal-cell .cal-st{font-size:9px} }
+  /* ===== Accrual groups (ค้างรับ/ค้างจ่าย/รับล่วงหน้า/จ่ายล่วงหน้า) ===== */
+  .accr-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  @media(max-width:820px){.accr-grid{grid-template-columns:1fr}}
+  .accr-panel{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--card)}
+  .accr-h{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--paper);font-weight:700;font-size:13px}
+  .accr-cnt{font-size:11px;font-weight:600;color:var(--muted);background:#fff;border:1px solid var(--line);padding:1px 8px;border-radius:10px}
+  .accr-scroll{max-height:230px;overflow:auto}
+  table.accr-table{width:100%;border-collapse:collapse;font-size:12.5px}
+  table.accr-table th{position:sticky;top:0;text-align:left;padding:7px 10px;background:#fff;color:var(--muted);font-size:10.5px;text-transform:uppercase;font-weight:700;border-bottom:1px solid var(--line);white-space:nowrap}
+  table.accr-table td{padding:6px 10px;border-bottom:1px solid var(--line)}
+  table.accr-table td.mono{font-family:"SF Mono",ui-monospace,monospace;white-space:nowrap;color:var(--ink)}
+  table.accr-table td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;font-family:"SF Mono",ui-monospace,monospace}
+  table.accr-table td.num.neg{color:var(--red)}
+  table.accr-table tfoot td{font-weight:700;background:var(--paper);border-top:1.5px solid var(--line);border-bottom:none}
+  table.accr-table tfoot td.num{text-align:right}
+  /* ===== Revenue vs Cost matching ===== */
+  table.rc-table tfoot td{font-weight:700;background:var(--paper);border-top:1.5px solid var(--line)}
+  .rc-pct{font-weight:700;padding:1px 7px;border-radius:6px;font-size:11.5px}
+  .rc-pct-hi{background:var(--green-bg);color:var(--green)}
+  .rc-pct-mid{background:var(--amber-bg);color:var(--amber)}
+  .rc-pct-lo{background:var(--red-bg);color:var(--red)}
 
   /* ===== Login screen ===== */
   .login-wrap{min-height:100vh;display:grid;place-items:center;background:linear-gradient(160deg,var(--ink) 0%,#233647 100%);padding:20px}
@@ -335,7 +436,7 @@
   .admin-cat{border:1px solid var(--line);border-radius:var(--radius);margin-bottom:14px;overflow:hidden;background:var(--card)}
   .admin-cat-h{padding:12px 15px;background:var(--paper);display:flex;align-items:center;gap:11px;border-bottom:1px solid var(--line)}
   .admin-cat-h .name{font-weight:650;font-size:14px;flex:1}
-  .admin-item{display:grid;grid-template-columns:95px 1fr 105px 125px 100px 130px 40px;gap:10px;padding:10px 15px;border-bottom:1px solid var(--line);align-items:center;font-size:13px}
+  .admin-item{display:grid;grid-template-columns:95px 1fr 105px 125px 100px 130px 120px 40px;gap:10px;padding:10px 15px;border-bottom:1px solid var(--line);align-items:center;font-size:13px}
   .admin-item:last-child{border-bottom:none}
   .admin-item input,.admin-item select{width:100%;border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-family:inherit;font-size:12.5px;background:#fff}
   .admin-item input:focus,.admin-item select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
@@ -453,6 +554,7 @@
   .ic-status-badge.draft{background:#eef0ec;color:var(--slate)}
   .ic-status-badge.submitted{background:#fef1dc;color:#c17608}
   .ic-status-badge.approved{background:var(--green-bg);color:var(--green)}
+  .ic-status-badge.rejected{background:#fde7e7;color:var(--red)}
   .ic-section{margin:16px 0}
   .ic-section-lbl{font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
   table.ic-tb{width:100%;border-collapse:collapse;font-size:12.5px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
@@ -620,6 +722,48 @@
   </div>
 </div>
 
+<!-- Loading overlay: หน้าโหลดตอนเข้าสู่ระบบ/ดึงข้อมูล -->
+<style>
+  #loadingOverlay{display:none;position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0e2b21 0%,#17513c 55%,#1e6a4c 100%);align-items:center;justify-content:center}
+  #loadingOverlay.show{display:flex}
+  .load-box{display:flex;flex-direction:column;align-items:center;gap:20px;animation:loadIn .35s ease}
+  @keyframes loadIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .mpl-spinner{width:58px;height:58px;border-radius:50%;border:5px solid rgba(255,255,255,.16);border-top-color:#79e6ad;animation:mplspin .8s linear infinite}
+  @keyframes mplspin{to{transform:rotate(360deg)}}
+  .load-logo{width:56px;height:56px;border-radius:14px;background:#fff;color:#17513c;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:19px;letter-spacing:.5px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .load-title{color:#fff;font-weight:750;font-size:17px;letter-spacing:.02em}
+  .load-msg{color:#bfe6d4;font-size:13px;min-height:18px}
+  .load-dots::after{content:'';animation:loadDots 1.2s steps(4,end) infinite}
+  @keyframes loadDots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+</style>
+<div id="loadingOverlay">
+  <div class="load-box">
+    <div class="load-logo">MPL</div>
+    <div class="mpl-spinner"></div>
+    <div class="load-title">Closing Checklist</div>
+    <div class="load-msg"><span id="loadingMsg">กำลังเข้าสู่ระบบ</span><span class="load-dots"></span></div>
+  </div>
+</div>
+
+<!-- Saving indicator: แสดงตอนบันทึกข้อมูล + บล็อกคลิกซ้ำระหว่างบันทึก -->
+<style>
+  #savingOverlay{position:fixed;inset:0;z-index:11000;display:none;align-items:flex-start;justify-content:center;background:transparent;pointer-events:none}
+  #savingOverlay.show{display:flex}
+  #savingOverlay.busy{pointer-events:auto;background:rgba(15,30,25,.06)} /* กันคลิกซ้ำเฉพาะตอนกำลังบันทึก */
+  .saving-pill{margin-top:26px;display:flex;align-items:center;gap:10px;background:var(--ink);color:#fff;padding:11px 20px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.28);font-size:13.5px;font-weight:650;animation:savingIn .18s ease}
+  .saving-pill.done{background:var(--green)}
+  .saving-spin{width:15px;height:15px;border-radius:50%;border:2.5px solid rgba(255,255,255,.32);border-top-color:#fff;animation:mplspin .7s linear infinite;flex:none}
+  .saving-pill.done .saving-spin{display:none}
+  .saving-pill.done::before{content:'✓';font-weight:800;font-size:15px}
+  @keyframes savingIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+</style>
+<div id="savingOverlay">
+  <div class="saving-pill busy">
+    <span class="saving-spin"></span>
+    <span id="savingText">กำลังบันทึกข้อมูล...</span>
+  </div>
+</div>
+
 <div class="layout" id="appLayout" style="display:none">
 <aside class="sidebar" id="sidebar">
   <div class="brand">
@@ -642,8 +786,9 @@
   </nav>
   <div id="userChip"></div>
   <div class="side-foot">
-    <div class="conn demo" id="connStatus" onclick="openConnect()"><span class="dot"></span><span id="connText">โหมดทดลอง</span></div>
-    <div style="font-size:10px;color:#5a6b7a;text-align:center;margin-top:6px;letter-spacing:.02em" title="ตรวจสอบว่าทุกคนในทีมใช้ไฟล์เวอร์ชันเดียวกัน — ถ้าเลขไม่ตรงกัน แสดงว่ามีคนใช้ไฟล์เก่าอยู่">v2569.08.06-1</div>
+    <div class="conn live" id="connStatus" onclick="openConnect()"><span class="dot"></span><span id="connText">ซิงก์ Google Sheet</span></div>
+    <div style="font-size:10px;color:#5a6b7a;text-align:center;margin-top:6px;letter-spacing:.02em" title="ตรวจสอบว่าทุกคนในทีมใช้ไฟล์เวอร์ชันเดียวกัน — ถ้าเลขไม่ตรงกัน แสดงว่ามีคนใช้ไฟล์เก่าอยู่">HTML v2569.10.07-4 · ปฏิทินแยกสถานะ</div>
+    <div id="backendVer" style="font-size:10px;text-align:center;margin-top:2px;letter-spacing:.02em" title="เวอร์ชันของ Apps Script ที่ Deploy อยู่ — ถ้าขึ้นสีแดง/ไม่ตรง แสดงว่ายังไม่ได้ Deploy โค้ดใหม่">Backend: —</div>
   </div>
 </aside>
 
@@ -670,11 +815,6 @@
 <main>
   <!-- ============ DASHBOARD ============ -->
   <section class="page active" id="page-dash">
-    <div id="setupBanner" class="setup-banner">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg>
-      <div style="flex:1">กำลังใช้ <b>โหมดทดลอง</b> — ข้อมูลยังไม่ถูกบันทึกถาวร เชื่อมต่อ Google Sheet เพื่อให้ทุกคนเห็นข้อมูลชุดเดียวกัน <a onclick="openConnect()">ตั้งค่าการเชื่อมต่อ →</a></div>
-    </div>
-
     <div class="page-head">
       <div>
         <h1>ภาพรวมงานปิดบัญชี</h1>
@@ -684,7 +824,10 @@
         <div class="seg" id="dashViewSeg">
           <button data-view="card" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>การ์ดรายเดือน</button>
           <button data-view="year"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"/></svg>ตารางทั้งปี</button>
+          <button data-view="kpi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>รายบุคคล (KPI)</button>
+          <button data-view="cal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>ปฏิทิน</button>
         </div>
+        <button class="btn btn-ghost btn-sm" id="btnSendReminders" style="display:none" onclick="sendRemindersNow()" title="ส่งเมลเตือนกำหนดส่งให้ผู้รับผิดชอบที่ค้างงาน (เดือนปัจจุบัน)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>ส่งเมลเตือน</button>
         <button class="btn btn-ghost btn-sm" onclick="refreshAll()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>รีเฟรช</button>
       </div>
     </div>
@@ -707,6 +850,21 @@
         <div class="card-h"><h2>สรุปผลตรวจสอบ TB</h2><span class="hint" id="tbValHint"></span></div>
         <div class="card-body" id="tbValBody"></div>
       </div>
+      <div class="card">
+        <div class="card-h"><h2>รายละเอียดผลตรวจ TB</h2><span class="hint" id="tbDetailHint"></span></div>
+        <div class="card-body">
+          <div id="tbDetailControls"></div>
+          <div id="tbDetailBody"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h2>รายละเอียดบัญชี ค้างรับ / ค้างจ่าย / รับล่วงหน้า / จ่ายล่วงหน้า</h2><span class="hint" id="accrualHint"></span></div>
+        <div class="card-body" id="accrualBody"></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h2>กระทบรายได้และต้นทุนขาย</h2><span class="hint" id="revCostHint"></span></div>
+        <div class="card-body" id="revCostBody"></div>
+      </div>
     </div>
 
     <!-- --- Year matrix view (12 months) --- -->
@@ -724,11 +882,49 @@
   </div>
 </div>
 <div class="matrix-scroll"><table class="matrix" id="matrixTable"></table></div>
-      <div class="matrix-legend">
-        <div class="lg"><span class="sw ok"></span> ทำเสร็จแล้ว (OK)</div>
-        <div class="lg"><span class="sw empty"></span> ยังไม่ทำ</div>
-        <div class="lg"><span class="sw na"></span> ไม่มีในแผน (ปิดช่อง)</div>
-        <div class="lg" style="margin-left:auto;color:var(--muted)">คลิกที่ช่องเพื่อสลับสถานะ</div>
+
+    </div>
+
+    <!-- --- KPI per-person view --- -->
+    <div id="dashKpiView" style="display:none">
+      <div class="page-head" style="margin-bottom:14px;align-items:center">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <div class="seg" id="kpiScopeSeg" style="transform:scale(.95);transform-origin:left">
+            <button data-scope="month" class="active">เดือนนี้</button>
+            <button data-scope="year">ทั้งปี</button>
+          </div>
+          <select id="kpiNameFilter" class="owner-select" style="min-width:200px;max-width:260px" onchange="renderKPI()"></select>
+        </div>
+        <span class="hint" id="kpiHint"></span>
+      </div>
+      <div class="kpi-row" id="kpiTeamRow" style="margin-bottom:16px"></div>
+      <div class="card">
+        <div class="card-h"><h2>จัดอันดับตามผู้รับผิดชอบ</h2><span class="hint">เรียงตาม % ความคืบหน้า · คลิกชื่อเพื่อดูรายการ</span></div>
+        <div class="card-body" id="kpiRankBody"></div>
+      </div>
+      <div class="card" id="kpiDetailCard" style="display:none">
+        <div class="card-h"><h2 id="kpiDetailTitle">รายการของผู้รับผิดชอบ</h2><span class="hint" id="kpiDetailHint"></span></div>
+        <div class="card-body" id="kpiDetailBody"></div>
+      </div>
+    </div>
+
+    <!-- --- Calendar view --- -->
+    <div id="dashCalView" style="display:none">
+      <div class="card">
+        <div class="card-h">
+          <h2 id="calTitle">ปฏิทินกำหนดส่งงาน</h2>
+          <span style="display:flex;gap:10px;align-items:center;font-size:12px;color:var(--muted)">
+            <span class="cal-legend"><i class="due-overdue"></i>เกินกำหนด</span>
+            <span class="cal-legend"><i class="due-near"></i>ใกล้ครบ</span>
+            <span class="cal-legend"><i class="due-upcoming"></i>ยังไม่ถึง</span>
+            <span class="cal-legend"><i class="due-done"></i>เสร็จแล้ว</span>
+          </span>
+        </div>
+        <div class="card-body"><div id="calGrid"></div></div>
+      </div>
+      <div class="card" id="calDayCard" style="display:none">
+        <div class="card-h"><h2 id="calDayTitle">งานที่ครบกำหนด</h2><span class="hint" id="calDayHint"></span></div>
+        <div class="card-body" id="calDayBody"></div>
       </div>
     </div>
   </section>
@@ -752,6 +948,7 @@
           <th style="width:40px">ทำ</th>
           <th style="width:110px">รหัส</th>
           <th>รายการ (Detail)</th>
+          <th style="width:150px">ผู้รับผิดชอบ</th>
           <th style="width:120px">ผลลัพธ์</th>
           <th style="width:130px">ลิงก์เอกสาร</th>
           <th style="width:220px">หมายเหตุ</th>
@@ -1106,38 +1303,22 @@
 <!-- Connect modal -->
 <div class="overlay" id="connectModal">
   <div class="modal" style="max-width:540px">
-    <div class="modal-h"><h3>เชื่อมต่อ Google Sheet</h3><button class="icon-btn" onclick="closeModal('connectModal')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div class="modal-h"><h3>การเชื่อมต่อ Google Sheet</h3><button class="icon-btn" onclick="closeModal('connectModal')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
     <div class="modal-b">
-      <div id="embedStatusBanner"></div>
-      <label>วาง URL ของ Google Apps Script Web App</label>
-      <input type="url" id="apiInput" placeholder="https://script.google.com/macros/s/.../exec">
-      <p style="font-size:12px;color:var(--muted);margin:-8px 0 16px">ดูวิธีสร้างในไฟล์คู่มือติดตั้ง · เมื่อเชื่อมแล้วข้อมูลทุกคนจะซิงก์เป็นชุดเดียวกัน</p>
-      <div style="background:var(--paper);border-radius:8px;padding:12px 14px;font-size:12.5px;color:var(--ink-soft)">
-        <b>ยังไม่ได้ตั้งค่า?</b> ระบบทำงานได้ในโหมดทดลองก่อน (ข้อมูลเก็บในเบราว์เซอร์นี้) เชื่อม Sheet ภายหลังได้ทุกเมื่อ
+      <div class="embed-banner on">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+        <div><b>ไฟล์นี้เชื่อมต่อ Google Sheet คงที่ตัวเดียว</b>ทุกคนที่เปิดไฟล์นี้เชื่อมต่อ Sheet เดียวกันเสมอ ไม่มีโหมดทดลองหรือข้อมูลสำรองในเบราว์เซอร์ — ข้อมูลที่เห็นทั้งหมดดึงจาก Sheet จริงเท่านั้น</div>
       </div>
+      <p style="font-size:12.5px;color:var(--muted);margin:14px 0 0">
+        การเชื่อมต่อฝังไว้ในโค้ดโดยตรง (<code>const API_URL</code>) เปลี่ยนไม่ได้จากหน้านี้ — ถ้าต้องการเชื่อมกับ Sheet อื่น (เช่น ทำสำเนาให้โรงงาน/บริษัทอื่น) ให้แก้บรรทัด <code>const API_URL = "..."</code> ในไฟล์ต้นฉบับโดยตรง แล้วแจกไฟล์ที่แก้แล้วต่อ
+      </p>
 
       <div style="margin-top:20px">
-        <label style="margin-bottom:8px">ให้ทีมในโรงงานนี้ (เช่น 7 คน) เชื่อม Sheet เดียวกันอัตโนมัติ</label>
-        <div class="dl-list">
-          <div class="dl-row">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
-            <div class="txt"><b>ฝัง URL ลงไฟล์แล้วดาวน์โหลด</b><span>ทุกคนที่เปิดไฟล์นี้จะเชื่อมต่อ Sheet เดียวกันทันที ไม่ต้องกรอก URL เอง</span></div>
-            <button class="dl-btn" onclick="downloadEmbeddedApp()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg>ฝังและดาวน์โหลด</button>
-          </div>
-          <div class="dl-row">
-            <div class="ic" style="background:var(--red-bg);color:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg></div>
-            <div class="txt"><b>รีเซ็ต URL ก่อนส่งต่อ</b><span>ลบ URL ที่ฝังไว้ออก แล้วดาวน์โหลดไฟล์สะอาดสำหรับส่งให้โรงงาน/บริษัทอื่น</span></div>
-            <button class="dl-btn" onclick="downloadResetApp()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg>รีเซ็ตและดาวน์โหลด</button>
-          </div>
-        </div>
-      </div>
-
-      <div style="margin-top:16px">
         <label style="margin-bottom:8px">ไฟล์สำหรับส่งต่อให้โรงงาน/บริษัทอื่นตั้งค่าเอง</label>
         <div class="dl-list">
           <div class="dl-row">
             <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17V3h11l5 5v9H4z"/><path d="M15 3v5h5M8 13h8M8 17h5"/></svg></div>
-            <div class="txt"><b>checklist_app.html</b><span>ตัวแอป — เปิดใช้งานได้ทันทีในเบราว์เซอร์</span></div>
+            <div class="txt"><b>checklist_app.html</b><span>ตัวแอป (มี API_URL ปัจจุบันติดไปด้วย — แก้บรรทัดนี้ก่อนแจกถ้าต้องเชื่อม Sheet อื่น)</span></div>
             <button class="dl-btn" onclick="downloadFile('app')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg>ดาวน์โหลด</button>
           </div>
           <div class="dl-row">
@@ -1155,8 +1336,7 @@
       </div>
     </div>
     <div class="modal-f">
-      <button class="btn btn-ghost" onclick="disconnectSheet()">ใช้โหมดทดลอง</button>
-      <button class="btn btn-pri" onclick="connectSheet()">เชื่อมต่อ</button>
+      <button class="btn btn-pri" onclick="closeModal('connectModal')">ปิด</button>
     </div>
   </div>
 </div>
@@ -1166,19 +1346,15 @@
 <script>
 /* =========================================================
    MPL Closing Checklist  —  single-file web app
-   Backend: Google Apps Script (optional). Falls back to
-   localStorage "demo mode" so it works immediately.
+   Backend: Google Apps Script — เชื่อมต่อ Sheet เดียวเสมอ (const API_URL คงที่)
+   ไม่มี localStorage fallback / โหมดทดลอง / demo mode — ตามรูปแบบระบบ E-Sign
    ========================================================= */
 
 /* ---------------------------------------------------------
-   FACTORY_API_URL — วาง Web App URL ของโรงงาน/บริษัทนี้ตรงนี้ได้โดยตรง
-   (แก้ไขบรรทัดนี้ด้วยมือ หรือใช้ปุ่ม "ฝัง URL ลงไฟล์แล้วดาวน์โหลด"
-   ในหน้าตั้งค่าการเชื่อมต่อก็ได้ผลเหมือนกัน)
-   เมื่อมีค่าตรงนี้ ทุกคนที่เปิดไฟล์นี้จะเชื่อมต่อ Sheet เดียวกันอัตโนมัติ
-   โดยไม่ต้องกรอก URL เองทีละคน — เหมาะสำหรับแจกให้ทีมในโรงงานเดียวกัน (เช่น 7 คน)
-   ก่อนส่งไฟล์นี้ให้โรงงาน/บริษัทอื่น ให้กด "รีเซ็ต URL" ก่อน ป้องกันข้อมูลปนกัน
+   API_URL — Web App URL ของ Google Apps Script ที่เชื่อมต่อ ฝังตรงนี้ค่าเดียว ไม่มี fallback
+   (เปลี่ยนบริษัท/โรงงานอื่น ให้แก้บรรทัดนี้ตรงๆ ในซอร์สโค้ด แล้วแจกไฟล์ต่อ)
    --------------------------------------------------------- */
-const FACTORY_API_URL = "https://script.google.com/macros/s/AKfycbyRsCW5Wv_-LERCSfFMb08KXFOT5ZEl5XjTAJoktBGppTFCYrhDX0zk7v_DPfnF9CpPjw/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyeMAFGyj4Ri2jONaHKLQFfnYn_2glEkfjWTn0GHxX-MQRGDPgpVNt1Mzvx-RsYsJUS0A/exec";
 
 const CAT_COLORS = {
   '1':'#2f8a4e','2':'#b8791a','3':'#8a6d2f','4':'#2f5f8a',
@@ -1259,10 +1435,6 @@ const DEFAULT_CONFIG = [
 ];
 
 /* ---------------- State ---------------- */
-// ลำดับความสำคัญ: URL ที่ฝังในไฟล์ (FACTORY_API_URL) > URL ที่เคยกรอกไว้ในเบราว์เซอร์นี้ (localStorage)
-// เพื่อให้ทุกคนที่เปิดไฟล์เดียวกัน (เช่น 7 คนในทีม) เชื่อมต่อ Sheet เดียวกันอัตโนมัติโดยไม่ต้องกรอกเอง
-let API_URL = FACTORY_API_URL || localStorage.getItem('mpl_api') || '';
-let usingEmbeddedURL = !!FACTORY_API_URL;
 // ===== Multi-company =====
 // รายการบริษัทที่ระบบนี้ดูแล (1 Sheet เก็บได้หลายบริษัท) — ตั้งค่าที่หน้า "ตั้งค่าบริษัท"
 // เก็บเป็น [{code:'1160', name:'บริษัท รวมเกษตรกรอุตสาหกรรม จำกัด', plant:'MPL'}, ...]
@@ -1344,6 +1516,7 @@ let hasEverSyncedConfig = load('mpl_ever_synced', false);
 let statusData = load('mpl_status', {});   // { "1160|2569-08": { code: {done,link,note,by,at,owner} } }
 let tbData = load('mpl_tb', {});           // { "1160|2569-08": [rows] }
 let tbMeta = load('mpl_tbmeta', {});       // { "1160|2569-08": {at, by, filename} }  เวลาอัปโหลดล่าสุด
+let tbNotes = load('mpl_tbnotes', {});     // { "1160|2569-08": { "124100": {note,by,at} } } คำอธิบายบัญชีที่ผลตรวจผิดปกติ
 let curYear = load('mpl_curyear', defaultYear());
 let curPeriod = defaultPeriod();
 let dashView = 'card';
@@ -1380,8 +1553,13 @@ function canEditTips(){ return CURRENT_ROLE()==='accountant'||CURRENT_ROLE()==='
 function isManagerViewOnly(){ return CURRENT_ROLE()==='manager'; }
 const ROLE_LABEL={accountant:'นักบัญชี',supervisor:'หัวหน้าแผนก',manager:'ผู้จัดการ'};
 
-function load(k,def){try{return JSON.parse(localStorage.getItem(k))||def}catch{return def}}
-function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+// load()/save() — ตามคำขอ: ห้ามแสดงผลข้อมูลที่มาจาก localStorage เด็ดขาด ต้องดึงจาก Sheet ที่เชื่อมไว้เท่านั้น
+// เดิมสองฟังก์ชันนี้ใช้ localStorage เป็นแคชให้เห็นข้อมูลทันทีก่อน sync เสร็จ และจำข้อมูลไว้ข้ามการเปิดหน้าเว็บใหม่
+// ตอนนี้ตั้งใจทำให้ "ไม่มีผล" กับ localStorage เลย (ไม่อ่าน ไม่เขียน) โดยไม่ต้องไล่แก้ทุกจุดที่เรียกใช้ทั่วไฟล์
+// (มีมากกว่า 50 จุด) — ทุกจุดยังเรียก load()/save() เหมือนเดิมได้ปกติ แค่ผลลัพธ์จะไม่ผูกกับเบราว์เซอร์อีกต่อไป
+// ผลคือ: เปิดหน้าเว็บใหม่ทุกครั้งจะเริ่มจากค่าว่าง (default) แล้วรอข้อมูลจริงจาก syncFromSheet() มาแทนที่เสมอ
+function load(k,def){ return def; }
+function save(k,v){ /* ตั้งใจไม่บันทึกลง localStorage */ }
 function defaultYear(){return new Date().getFullYear()+543}  // พ.ศ. ปัจจุบัน
 function defaultPeriod(){const d=new Date();return `${d.getFullYear()+543}-${String(d.getMonth()+1).padStart(2,'0')}`}
 function periodLabel(p){const[y,m]=p.split('-');return `${MONTHS[+m-1]} ${y}`}
@@ -1391,18 +1569,27 @@ function statusOf(period){const k=ck(period);statusData[k]=statusData[k]||{};ret
 function allPeriods(){return Array.from({length:12},(_,i)=>`${curYear}-${String(i+1).padStart(2,'0')}`)}
 function tbInfo(period){const k=ck(period);const rows=tbData[k];const meta=tbMeta[k];return{count:rows?rows.length:0,at:meta?meta.at:'',by:meta?meta.by:''};}
 
-/* ---------------- Google Sheet backend ---------------- */
+/* ---------------- Google Sheet backend ----------------
+   รูปแบบการเชื่อมต่อ/ส่ง-รับข้อมูล อ้างอิงตามระบบ E-Sign (E_Sign_Document-system_V1_0.html):
+   - request:  {action, payload:{...}}  (ห่อฟิลด์ทั้งหมดไว้ใน payload แทนการแผ่ออกมาตรงๆ)
+   - response: ใช้ฟิลด์ success/error (นอกเหนือจาก ok เดิม ที่ backend ยังคงส่งมาคู่กันเพื่อความเข้ากันได้)
+   - header 'text/plain;charset=utf-8' หลีกเลี่ยง CORS preflight กับ Apps Script (ตามที่ E-Sign ใช้) */
 async function apiCall(action,payload){
   if(!API_URL) return null;
+  // การ "บันทึก" ทุกชนิด (ไม่ใช่ getAll ที่เป็นการอ่าน) แสดง indicator กลาง + บล็อกคลิกซ้ำ
+  const isWrite = action && action!=='getAll';
+  let okDone=false;
+  if(isWrite) savingStart();
   try{
-    const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action,...payload})});
+    const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action, payload:payload||{}})});
     if(!res.ok){
       console.warn('API HTTP error',res.status,res.statusText);
       toast(`เชื่อมต่อ Sheet ไม่สำเร็จ (HTTP ${res.status}) · ใช้ข้อมูลในเครื่องแทน`,true);
       return null;
     }
     const text=await res.text();
-    try{ return JSON.parse(text); }
+    let data;
+    try{ data=JSON.parse(text); }
     catch(parseErr){
       // ตอบกลับมาไม่ใช่ JSON — ส่วนใหญ่เกิดจาก Apps Script ยังไม่ได้ตั้ง "Who has access: Anyone"
       // (ตอบกลับเป็นหน้า HTML ให้ล็อกอิน Google แทน) หรือ deploy เวอร์ชันที่ error อยู่ภายใน
@@ -1410,31 +1597,93 @@ async function apiCall(action,payload){
       toast('เชื่อมต่อ Sheet ไม่สำเร็จ (รูปแบบข้อมูลผิดปกติ) · ตรวจสอบการตั้งค่า Deploy · ใช้ข้อมูลในเครื่องแทน',true);
       return null;
     }
+    // แปลง success -> ok เผื่อ backend เก่าที่ยังไม่ได้ deploy ใหม่ส่งมาแค่ success โดยไม่มี ok คู่มาด้วย
+    // ไฟล์นี้เช็ค r.ok อยู่หลายร้อยจุด จึงแปลงให้ตรงกันตรงทางเข้าเดียว ไม่ต้องไล่แก้ทุกจุดในไฟล์
+    if(data && typeof data.ok==='undefined' && typeof data.success!=='undefined'){ data.ok=data.success; }
+    if(data && data.success===false && data.error) console.warn('API',action,'returned error:',data.error);
+    okDone = !!(data && data.ok!==false);
+    return data;
   }catch(e){
     console.warn('API network error',e);
     toast('เชื่อมต่อ Sheet ไม่สำเร็จ (เครือข่าย/CORS) · ใช้ข้อมูลในเครื่องแทน',true);
     return null;
+  } finally {
+    if(isWrite) savingEnd(okDone);
   }
+}
+/* ---------------- Saving indicator (แสดงตอนบันทึก กันคลิกซ้ำ) ---------------- */
+let _saveCount=0, _saveTimer=null;
+function savingStart(){
+  _saveCount++;
+  clearTimeout(_saveTimer);
+  const o=document.getElementById('savingOverlay'); if(!o) return;
+  const t=document.getElementById('savingText'); if(t) t.textContent='กำลังบันทึกข้อมูล...';
+  o.querySelector('.saving-pill').className='saving-pill busy';
+  o.classList.add('show','busy');
+}
+function savingEnd(ok){
+  _saveCount=Math.max(0,_saveCount-1);
+  if(_saveCount>0) return; // ยังมีงานบันทึกค้างอยู่ ยังไม่ปิด
+  const o=document.getElementById('savingOverlay'); if(!o) return;
+  o.classList.remove('busy'); // เลิกบล็อกคลิก
+  if(ok){
+    const t=document.getElementById('savingText'); if(t) t.textContent='บันทึกเสร็จสิ้น';
+    o.querySelector('.saving-pill').className='saving-pill done';
+    _saveTimer=setTimeout(()=>o.classList.remove('show'), 1000);
+  } else {
+    o.classList.remove('show');
+  }
+}
+// ---- GL normalize ----
+// ฟิลด์ gl อาจมาเป็น "ข้อความ" ("280100, 110100") จากชีต หรือ "อาเรย์" (['280100']) จาก default/แก้ในแอป
+// ต้องทำให้เป็นอาเรย์เสมอ ไม่งั้น .map()/.join() จะ error ตอน render แล้วหมวดถัดไปไม่ถูกวาด
+// (นี่คือต้นเหตุที่หน้า "ตั้งค่ารายการ"/เช็คลิสต์แสดงไม่ครบ ทั้งที่ข้อมูลในชีตมีครบ)
+function glArr(v){
+  if(Array.isArray(v)) return v.map(x=>String(x).trim()).filter(Boolean);
+  if(v==null||v==='') return [];
+  return String(v).split(/[,;\n]+/).map(x=>x.trim()).filter(Boolean);
+}
+function normalizeCfgGL(cfg){
+  (Array.isArray(cfg)?cfg:[]).forEach(cat=>(cat.items||[]).forEach(it=>{ it.gl=glArr(it.gl); }));
+  return Array.isArray(cfg)?cfg:[];
+}
+// เวอร์ชัน backend ที่ HTML ตัวนี้คู่กัน — ถ้า backend ที่ Deploy ไม่ตรง แปลว่ายังไม่ได้ Deploy โค้ดใหม่
+const EXPECTED_BACKEND='2569.10.07-due3';
+function updateBackendVer(ver){
+  const el=document.getElementById('backendVer'); if(!el) return;
+  if(!ver){ // backend เก่าไม่ส่ง version กลับมาเลย
+    el.textContent='Backend: เก่า (ต้อง Deploy ใหม่)'; el.style.color='#e05a5a'; el.style.fontWeight='700';
+    return;
+  }
+  const ok = ver===EXPECTED_BACKEND;
+  el.textContent='Backend: '+ver+(ok?' ✓':' (เก่า — Deploy ใหม่)');
+  el.style.color = ok ? '#2fa96a' : '#e05a5a';
+  el.style.fontWeight = ok ? '600' : '700';
 }
 async function syncFromSheet(allYear){
   if(!API_URL) return;
   // allYear=true ดึงสถานะและ TB ทั้ง 12 เดือน (ใช้ในตารางปี) มิฉะนั้นดึงเฉพาะงวดปัจจุบัน
   const r=await apiCall('getAll',{company:curCompany,period:allYear?'*':curPeriod});
   if(r&&r.ok){
+    updateBackendVer(r.backendVersion); // แสดงเวอร์ชัน backend ที่ Deploy อยู่จริง
     // config (ชุดกลาง ใช้ร่วมกันทุกบริษัท): Sheet คืน [] เมื่อไม่มีข้อมูล
     // แยกให้ได้ว่า "ยังไม่เคยตั้งค่าเลย" (seed มาตรฐานให้) กับ "เคยมีแล้วถูกลบทีหลัง" (เชื่อว่าตั้งใจลบ)
     if(Array.isArray(r.config)){
-      if(r.config.length){ config=r.config; }
-      else if(curCompany){
-        config=JSON.parse(JSON.stringify(DEFAULT_CONFIG));
-        const plant=(currentCompany().plant||curCompany||'MPL').trim();
-        config.forEach(cat=>(cat.items||[]).forEach((it,idx)=>{
-          it.code=`${plant}-${curYear}-${String(cat.id).padStart(2,'0')}-${String(idx+1).padStart(2,'0')}`;
-        }));
-        await apiCall('setConfig',{company:curCompany,config});
-      } else config=[];
+      // แสดงตามที่ Sheet มีจริงเท่านั้น — ห้ามเขียนทับ Sheet อัตโนมัติเด็ดขาด
+      // (เดิมถ้าอ่านได้ค่าว่าง ระบบจะ setConfig ทับด้วยรายการมาตรฐาน 52 รายการทันที
+      //  ทำให้รายการที่แก้ manual ไว้ใน Sheet ถูกลบทิ้งโดยไม่ตั้งใจ โดยเฉพาะกรณีคอลัมน์ company
+      //  ไม่ตรงกับบริษัทที่เลือกอยู่ ซึ่งทำให้อ่านไม่เจอทั้งที่ข้อมูลยังอยู่)
+      // ถ้าต้องการรายการมาตรฐานจริงๆ ให้กดปุ่ม "กู้คืนรายการมาตรฐาน" ในหน้าตั้งค่ารายการเอง
+      config = normalizeCfgGL(r.config); // แปลง gl เป็นอาเรย์เสมอ กัน render พังกลางคัน
       if(curCompany){configByCompany[curCompany]=config;save('mpl_config_by_company',configByCompany);}
       if(!config.some(c=>c.id===curTab))curTab=config[0]?.id||null;
+      // ถ้าอ่านรายการไม่ได้เลย แต่ในแท็บ Config มีข้อมูลอยู่ใต้รหัสบริษัทอื่น ให้เตือนให้ชัด
+      // (อาการนี้ดูเหมือน "ข้อมูลหาย" ทั้งที่ข้อมูลยังอยู่ครบ แค่คอลัมน์ company ไม่ตรงกับบริษัทที่เลือกอยู่)
+      if(!config.length && curCompany && r.configCompanies && Object.keys(r.configCompanies).length){
+        const found=Object.entries(r.configCompanies).map(([c,n])=>`"${c}" (${n} แถว)`).join(', ');
+        console.warn('Config mismatch — sheet has rows under:', r.configCompanies, 'but app asked for:', curCompany);
+        toast(`ไม่พบรายการของบริษัท "${curCompany}" แต่ในชีท Config มีข้อมูลของ ${found} — ตรวจคอลัมน์ company ให้ตรงกัน`,true);
+      }
     }
     hasEverSyncedConfig=true; save('mpl_ever_synced',true);
     // companies: รายการบริษัททั้งหมดที่ระบบนี้ดูแล
@@ -1458,6 +1707,12 @@ async function syncFromSheet(allYear){
     // TB Safe Sync: Sheet เป็น source of truth แต่ไม่ล้างข้อมูล local ทั้งก้อนจาก response ผิดปกติ
     if(r.tbMeta && typeof r.tbMeta==='object'){
       tbMeta={...tbMeta,...r.tbMeta}; save('mpl_tbmeta',tbMeta);
+    }
+    if(r.tbNotes && typeof r.tbNotes==='object'){
+      // merge รายบริษัท|งวด กันโน้ตที่เพิ่งพิมพ์หายจาก response ที่มาไม่ครบ
+      const mn={...tbNotes};
+      Object.keys(r.tbNotes).forEach(k=>{ mn[k]={...(mn[k]||{}),...(r.tbNotes[k]||{})}; });
+      tbNotes=mn; save('mpl_tbnotes',tbNotes);
     }
     if(!allYear && Array.isArray(r.tb)){
       // Current company+period: direct TB response is authoritative.
@@ -1553,10 +1808,24 @@ async function syncChecklistCodesToCurrentCompany(){
     if(String(it.code||'')!==wanted){it.code=wanted;changed++;}
   }));
   configByCompany[curCompany]=config;save('mpl_config_by_company',configByCompany);
-  if(changed&&API_URL)await apiCall('setConfig',{company:curCompany,config});
+  // เดิม: ถ้ารหัสเปลี่ยน จะ push setConfig ทับ Config บนชีต "ทุกครั้ง" ที่สลับบริษัท/เปลี่ยนปี
+  // ทำให้ Config บนชีตถูกเขียนทับซ้ำๆ โดยไม่จำเป็น เสี่ยงชนกับผู้ใช้คนอื่น/ค่าว่างระหว่างโหลด
+  // และทำให้สถานะที่ผูกกับรหัสเดิม "กำพร้า" จนดูเหมือนข้อมูลถูกลบ
+  // ตอนนี้: คำนวณรหัสไว้ใช้ในเครื่องอย่างเดียว ไม่ push อัตโนมัติระหว่างนำทาง
+  // การบันทึกรหัสขึ้นชีตจะเกิดเฉพาะตอนผู้ใช้ "แก้ไขรายการ" จริงๆ ในหน้าตั้งค่ารายการเท่านั้น
   return changed;
 }
 
+// re-render ทุกหน้าที่เกี่ยวข้องจากข้อมูลในเครื่อง (ไม่แตะเครือข่าย)
+function renderCurrentPage(){ renderDash(); renderCheck(); renderUploadStatus(); renderAdmin(); }
+// ดึงข้อมูลสดจากชีตแบบเบื้องหลัง + debounce กันการคลิกสลับรัวๆ ยิงเครือข่ายถี่เกินไป
+let _bgSyncT=null;
+function bgSync(){
+  clearTimeout(_bgSyncT);
+  _bgSyncT=setTimeout(()=>{
+    syncFromSheet(dashView==='year').then(()=>{ syncChecklistCodesToCurrentCompany(); renderCurrentPage(); });
+  }, 700);
+}
 function buildCompanySel(){
   const sel=document.getElementById('companySel'); if(!sel)return;
   const vis=visibleCompanies();
@@ -1570,13 +1839,19 @@ function buildCompanySel(){
     sel.appendChild(o);
   });
   if(curCompany) sel.value=curCompany;
-  sel.onchange=async()=>{
+  sel.onchange=()=>{
     curCompany=sel.value; save('mpl_curcompany',curCompany);
     applyCompanyLabel();
-    await syncFromSheet(dashView==='year');
-    await syncChecklistCodesToCurrentCompany();
-    renderDash(); renderCheck(); renderUploadStatus(); renderAdmin();
-    toast(`สลับไปบริษัท ${currentCompany().name||curCompany} · รหัสรายการปรับตาม Plant แล้ว`);
+    // แสดงทันทีจาก config ที่ cache ไว้ของบริษัทนี้ (สถานะ/TB ทุกบริษัทอยู่ในเครื่องครบแล้ว)
+    const cached=configByCompany[curCompany];
+    config = Array.isArray(cached) ? normalizeCfgGL(cached) : [];
+    if(!config.some(c=>c.id===curTab)) curTab=config[0]?.id||null;
+    syncChecklistCodesToCurrentCompany();
+    renderCurrentPage();
+    toast(`สลับไปบริษัท ${currentCompany().name||curCompany}`);
+    // ดึง config/สถานะล่าสุดจากชีตเบื้องหลัง แล้ว re-render (ไม่บล็อกจอ)
+    // ถ้าบริษัทนี้ยังไม่เคย cache ให้ดึงทันที (ไม่ debounce) จะได้ไม่ค้างว่างนาน
+    if(cached) bgSync(); else syncFromSheet(dashView==='year').then(()=>{ syncChecklistCodesToCurrentCompany(); renderCurrentPage(); });
   };
 }
 function buildPeriodSel(){
@@ -1588,12 +1863,13 @@ function buildPeriodSel(){
   // set current
   const [cy,cm]=curPeriod.split('-');
   mSel.value=cm;ySel.value=curYear;
-  const onChange=async()=>{
+  const onChange=()=>{
     curYear=+ySel.value;save('mpl_curyear',curYear);
     curPeriod=`${curYear}-${mSel.value}`;
-    await syncFromSheet(dashView==='year');
-    await syncChecklistCodesToCurrentCompany();
-    renderDash();renderCheck();renderUploadStatus();renderAdmin();
+    // สถานะ/TB ของทุกเดือน-ทุกปี อยู่ในเครื่องครบแล้ว → เปลี่ยนเดือน/ปีแสดงได้ทันทีไม่ต้องดึงใหม่
+    syncChecklistCodesToCurrentCompany();
+    renderCurrentPage();
+    bgSync(); // ดึงสดเบื้องหลังกันข้อมูลค้าง (debounce กันคลิกรัวๆ)
   };
   mSel.onchange=onChange;ySel.onchange=onChange;
 }
@@ -1601,13 +1877,25 @@ function buildPeriodSel(){
 /* ---------------- Progress calc ---------------- */
 function catProgress(cat){
   const st=getStatus();let done=0;
-  const items=enabledItemsOf(cat); // นับเฉพาะรายการที่บริษัทนี้ต้องทำ
+  // นับเฉพาะรายการที่บริษัทนี้ต้องทำ (enabledItemsOf) และไม่ถูกปิดช่อง N/A สำหรับงวดนี้โดยเฉพาะ (isPeriodDisabled)
+  // ถ้าไม่กรอง periodDisabled ออก รายการที่ทำเครื่องหมาย "ไม่มีในแผน" จะยังถูกนับเป็น "ยังไม่ทำ" ค้างตลอดไป ทำให้ % ผิด
+  const items=enabledItemsOf(cat).filter(it=>!isPeriodDisabled(it.code));
   items.forEach(it=>{if(st[it.code]?.done)done++;});
   return {done,total:items.length};
 }
 function overallProgress(){
   let d=0,t=0;config.forEach(c=>{const p=catProgress(c);d+=p.done;t+=p.total;});
   return {done:d,total:t};
+}
+// นับงานเกินกำหนด/ใกล้ครบของหมวด (เฉพาะงานในแผน ยังไม่เสร็จ ของงวดที่เลือก)
+function catDueCounts(cat){
+  let overdue=0, near=0;
+  enabledItemsOf(cat).forEach(it=>{
+    if(isPeriodDisabled(it.code)) return;
+    const st=dueStatus(it,curPeriod);
+    if(st==='overdue') overdue++; else if(st==='near') near++;
+  });
+  return {overdue,near};
 }
 
 /* ---------------- Dashboard view toggle ---------------- */
@@ -1618,14 +1906,250 @@ document.getElementById('dashViewSeg').addEventListener('click',async e=>{
   dashView=b.dataset.view;
   document.getElementById('dashCardView').style.display=dashView==='card'?'block':'none';
   document.getElementById('dashYearView').style.display=dashView==='year'?'block':'none';
+  document.getElementById('dashKpiView').style.display=dashView==='kpi'?'block':'none';
+  document.getElementById('dashCalView').style.display=dashView==='cal'?'block':'none';
   if(dashView==='year'){await syncFromSheet(true);renderMatrix();}
+  else if(dashView==='kpi'){ await syncFromSheet(true); renderKPI(); } // KPI ทั้งปีต้องใช้ข้อมูลทุกเดือน
+  else if(dashView==='cal'){ renderCalendar(); }
   else{renderDash();}   // รีเฟรชการ์ดให้ตรงกับที่ติ๊กในตารางปี
 });
+
+/* ---------------- KPI per-person view ---------------- */
+let kpiScope='month';   // 'month' | 'year'
+document.addEventListener('DOMContentLoaded',()=>{
+  const seg=document.getElementById('kpiScopeSeg');
+  if(seg) seg.addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    seg.querySelectorAll('button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); kpiScope=b.dataset.scope; renderKPI();
+  });
+});
+// รวมงานของทุกคน (ตัดรายการ N/A ของงวดนั้นออกจากการคิด % เสมอ)
+function kpiCompute(){
+  const periods = kpiScope==='year' ? allPeriods() : [curPeriod];
+  const per={}; // name -> {assigned, done, items:[{code,detail,cat,period,wf}]}
+  const bump=(name)=>{ if(!per[name]) per[name]={name,assigned:0,done:0,items:[]}; return per[name]; };
+  config.forEach(cat=>enabledItemsOf(cat).forEach(it=>{
+    const owner=ownerOf(it)|| '(ไม่ระบุผู้รับผิดชอบ)';
+    periods.forEach(p=>{
+      if(isPeriodDisabled(it.code,p)) return;        // N/A ของงวดนั้น ไม่นำมาคิด %
+      const rec=statusOf(p)[it.code]||{};
+      const wf=rec.wf||(rec.done?'approved':'draft');
+      const o=bump(owner); o.assigned++;
+      const isDone = wf==='approved';
+      if(isDone) o.done++;
+      o.items.push({code:it.code,detail:it.detail,cat:cat.name,period:p,wf,it:it});
+    });
+  }));
+  return per;
+}
+function renderKPI(){
+  const rankBody=document.getElementById('kpiRankBody');
+  const teamRow=document.getElementById('kpiTeamRow');
+  const hint=document.getElementById('kpiHint');
+  const nameSel=document.getElementById('kpiNameFilter');
+  if(!rankBody) return;
+  const per=kpiCompute();
+  let people=Object.values(per).filter(p=>p.assigned>0);
+  // เรียงตาม % จากน้อยไปมาก? ผู้ใช้อยากเห็นคนที่ % สูงก่อน → เรียงมากไปน้อย
+  people.forEach(p=>{ p.pct = p.assigned? Math.round(p.done/p.assigned*100):0; p.remaining=p.assigned-p.done; });
+  people.sort((a,b)=> b.pct-a.pct || b.assigned-a.assigned);
+
+  // ตัวกรองชื่อ (slicer) — เก็บค่าที่เลือกไว้
+  const prev=nameSel.value;
+  nameSel.innerHTML='<option value="">— ทุกคน —</option>'+people.map(p=>`<option value="${escHtml(p.name).replace(/"/g,'&quot;')}">${escHtml(p.name)}</option>`).join('');
+  if(prev && people.some(p=>p.name===prev)) nameSel.value=prev;
+  const filter=nameSel.value;
+
+  const scopeLabel = kpiScope==='year' ? `ทั้งปี ${curYear}` : `งวด ${periodLabel(curPeriod)}`;
+  if(hint) hint.textContent=scopeLabel;
+
+  // การ์ดสรุปทีม
+  const totAssigned=people.reduce((n,p)=>n+p.assigned,0);
+  const totDone=people.reduce((n,p)=>n+p.done,0);
+  const avgPct=totAssigned?Math.round(totDone/totAssigned*100):0;
+  teamRow.innerHTML=`
+    <div class="kpi"><div class="lbl">คนในทีม (มีงาน)</div><div class="val">${people.length}</div><div class="sub">${scopeLabel}</div></div>
+    <div class="kpi"><div class="lbl">งานทั้งหมด</div><div class="val">${totAssigned}</div><div class="sub">${totDone} เสร็จ · ${totAssigned-totDone} คงเหลือ</div></div>
+    <div class="kpi ${avgPct===100?'good':avgPct>0?'warn':''}"><div class="lbl">% เสร็จเฉลี่ย</div><div class="val">${avgPct}%</div><div class="sub">อนุมัติแล้ว/งานทั้งหมด</div></div>`;
+
+  // ตารางจัดอันดับ
+  const shown = filter ? people.filter(p=>p.name===filter) : people;
+  if(!shown.length){ rankBody.innerHTML=`<div class="empty" style="padding:22px;text-align:center;color:var(--muted)">ยังไม่มีงานที่มีผู้รับผิดชอบใน${scopeLabel}</div>`; }
+  else {
+    rankBody.innerHTML=`<div class="tbd-scroll"><table class="tbd-table kpi-table">
+      <thead><tr><th style="width:40px">#</th><th>ผู้รับผิดชอบ</th><th style="text-align:right">งานที่รับผิดชอบ</th><th style="text-align:right">เสร็จ</th><th style="text-align:right">คงเหลือ</th><th style="width:180px">ความคืบหน้า</th></tr></thead>
+      <tbody>${shown.map((p,i)=>{
+        const rank=filter?people.findIndex(x=>x.name===p.name)+1:i+1;
+        const barCls=p.pct===100?'ok':p.pct>0?'mid':'lo';
+        return `<tr class="kpi-row-click" onclick="kpiShowPerson('${escHtml(p.name).replace(/'/g,"\\'")}')" style="cursor:pointer">
+          <td>${rank}</td>
+          <td><b>${escHtml(p.name)}</b></td>
+          <td class="num">${p.assigned}</td>
+          <td class="num" style="color:var(--green)">${p.done}</td>
+          <td class="num" style="color:${p.remaining?'var(--red)':'var(--muted)'}">${p.remaining}</td>
+          <td><div class="kpi-bar"><i class="${barCls}" style="width:${p.pct}%"></i></div><span class="kpi-pct">${p.pct}%</span></td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table></div>`;
+  }
+
+  // รายละเอียดรายคน (เมื่อเลือกชื่อ)
+  const detailCard=document.getElementById('kpiDetailCard');
+  if(filter){ detailCard.style.display=''; kpiShowPerson(filter,true); }
+  else { detailCard.style.display='none'; }
+}
+function kpiShowPerson(name, keepFilter){
+  const nameSel=document.getElementById('kpiNameFilter');
+  if(!keepFilter){ nameSel.value=name; }
+  const detailCard=document.getElementById('kpiDetailCard');
+  const body=document.getElementById('kpiDetailBody');
+  const title=document.getElementById('kpiDetailTitle');
+  const hint=document.getElementById('kpiDetailHint');
+  const per=kpiCompute();
+  const p=per[name];
+  detailCard.style.display='';
+  title.textContent='รายการของ '+name;
+  if(!p){ body.innerHTML=`<div class="empty" style="padding:18px;text-align:center;color:var(--muted)">ไม่มีรายการ</div>`; return; }
+  if(hint) hint.textContent=`${p.done}/${p.assigned} เสร็จ · ${kpiScope==='year'?('ทั้งปี '+curYear):('งวด '+periodLabel(curPeriod))}`;
+  const wfLabel=(wf)=> wf==='approved'?'<span class="sev" style="background:var(--green-bg);color:var(--green)">อนุมัติแล้ว</span>'
+    : wf==='submitted'?'<span class="sev" style="background:#fef1dc;color:#c17608">รอตรวจสอบ</span>'
+    : wf==='rejected'?'<span class="sev" style="background:#fde7e7;color:var(--red)">ตีกลับ</span>'
+    : '<span class="sev" style="background:#eef0ec;color:var(--slate)">ยังไม่ส่ง</span>';
+  const rows=p.items.slice().sort((a,b)=> (a.period<b.period?-1:a.period>b.period?1:0) || (a.code<b.code?-1:1));
+  body.innerHTML=`<div class="tbd-scroll"><table class="tbd-table">
+    <thead><tr><th>รหัส</th><th>รายการ</th><th>หมวด</th>${kpiScope==='year'?'<th>งวด</th>':''}<th>กำหนดส่ง</th><th>สถานะ</th></tr></thead>
+    <tbody>${rows.map(it=>`<tr>
+      <td class="mono">${escHtml(it.code)}</td>
+      <td>${escHtml(it.detail)}</td>
+      <td>${escHtml(it.cat)}</td>
+      ${kpiScope==='year'?`<td>${escHtml(periodLabel(it.period))}</td>`:''}
+      <td>${dueBadgeHtml(it.it,it.period)||'—'}</td>
+      <td>${wfLabel(it.wf)}</td>
+    </tr>`).join('')}</tbody>
+  </table></div>`;
+}
+
+/* ---------------- Calendar view (ปฏิทินกำหนดส่ง) ---------------- */
+function calDueByDay(){
+  const [y,m]=curPeriod.split('-').map(Number);
+  const gY=y-543, gM=m;
+  const thisMap={}, nextMap={};
+  config.forEach(cat=>enabledItemsOf(cat).forEach(it=>{
+    const d=Number(it.due); if(!d) return;
+    if(isPeriodDisabled(it.code)) return;
+    const dd=dueDateOf(it,curPeriod); if(!dd) return;
+    const bucket=(String(it.dueMode||'')==='next')?nextMap:thisMap;
+    const day=dd.getDate();
+    (bucket[day]=bucket[day]||[]).push({it, cat:cat.name, st:dueStatus(it,curPeriod)});
+  }));
+  let nY=gY,nM=gM+1; if(nM>12){nM=1;nY=gY+1;}
+  return {thisMap, nextMap, gY, gM, daysIn:new Date(gY,gM,0).getDate(), nY, nM, nextDaysIn:new Date(nY,nM,0).getDate()};
+}
+function calWorst(list){
+  if(list.some(x=>x.st==='overdue')) return 'due-overdue';
+  if(list.some(x=>x.st==='near')) return 'due-near';
+  if(list.some(x=>x.st==='upcoming')) return 'due-upcoming';
+  return 'due-done';
+}
+// สรุปจำนวนงานในวันนั้นแยกตามสถานะงาน (wf) · แสดงเฉพาะสถานะที่มีจำนวน > 0
+function calCellStatus(list){
+  const st=statusOf(curPeriod);
+  const cnt={approved:0,submitted:0,rejected:0,draft:0};
+  list.forEach(x=>{ const rec=st[x.it.code]||{}; const w=rec.wf||(rec.done?'approved':'draft'); cnt[cnt[w]!==undefined?w:'draft']++; });
+  const defs=[
+    ['approved','อนุมัติแล้ว','var(--green)'],
+    ['submitted','รอตรวจสอบ','#c17608'],
+    ['rejected','ตีกลับ','var(--red)'],
+    ['draft','ยังไม่ส่ง','var(--slate)']
+  ];
+  return defs.filter(d=>cnt[d[0]]>0)
+    .map(d=>`<div class="cal-st" style="color:${d[2]}"><b>${cnt[d[0]]}</b> ${d[1]}</div>`).join('');
+}
+// สร้างกริดปฏิทิน 1 เดือน (gY,gM เป็น ค.ศ.) จาก map วัน->รายการ · scope ใช้บอกว่าเป็นเดือนนี้หรือเดือนถัดไปตอนคลิก
+function calMonthGrid(map, gY, gM, scope){
+  const daysIn=new Date(gY,gM,0).getDate();
+  const first=new Date(gY,gM-1,1).getDay();
+  const today=new Date(); const isThisMonth=(today.getFullYear()===gY && (today.getMonth()+1)===gM); const todayD=today.getDate();
+  const dow=['อา','จ','อ','พ','พฤ','ศ','ส'];
+  let html='<div class="cal-head">'+dow.map(d=>`<div>${d}</div>`).join('')+'</div><div class="cal-days">';
+  for(let i=0;i<first;i++) html+='<div class="cal-cell empty"></div>';
+  for(let d=1;d<=daysIn;d++){
+    const list=map[d]||[];
+    const worst=list.length?calWorst(list):'';
+    const isToday=isThisMonth&&d===todayD;
+    html+=`<div class="cal-cell${list.length?' has '+worst:''}${isToday?' today':''}" ${list.length?`onclick="renderCalDay(${d},'${scope}')"`:''}>
+      <div class="cal-d">${d}</div>
+      ${list.length?`<div class="cal-count">${list.length} งาน</div><div class="cal-stwrap">${calCellStatus(list)}</div>`:''}
+    </div>`;
+  }
+  return html+'</div>';
+}
+function renderCalendar(){
+  const grid=document.getElementById('calGrid'); if(!grid) return;
+  document.getElementById('calTitle').textContent='ปฏิทินกำหนดส่งงาน · '+periodLabel(curPeriod);
+  document.getElementById('calDayCard').style.display='none';
+  const c=calDueByDay();
+  let html='<div class="cal-wrap">'+calMonthGrid(c.thisMap,c.gY,c.gM,'this')+'</div>';
+  const hasNext=Object.keys(c.nextMap).length>0;
+  if(hasNext){
+    html+=`<div style="margin-top:18px"><div style="font-size:13px;font-weight:700;color:var(--ink-soft);margin-bottom:8px">
+      ⏭️ กำหนดส่งเดือนถัดไป · ${MONTHS[c.nM-1]} ${c.nY+543} <span style="font-weight:400;color:var(--muted)">(งานของงวด ${periodLabel(curPeriod)})</span></div>
+      <div class="cal-wrap">${calMonthGrid(c.nextMap,c.nY,c.nM,'next')}</div></div>`;
+  }
+  grid.innerHTML=html;
+}
+// สถานะงานแบบชิปสี (ใช้ร่วมกับหน้ารายบุคคล)
+function wfChip(w){
+  return w==='approved'?'<span class="sev" style="background:var(--green-bg);color:var(--green)">อนุมัติแล้ว</span>'
+    : w==='submitted'?'<span class="sev" style="background:#fef1dc;color:#c17608">รอตรวจสอบ</span>'
+    : w==='rejected'?'<span class="sev" style="background:#fde7e7;color:var(--red)">ตีกลับ</span>'
+    : '<span class="sev" style="background:#eef0ec;color:var(--slate)">ยังไม่ส่ง</span>';
+}
+let _calDay=null, _calScope='this', calDayNameFilter='';
+function renderCalDay(day, scope){
+  // คลิกวันใหม่ = รีเซ็ตตัวกรองชื่อ · เรียกจากดรอปดาว (day=null) = คงวัน/ตัวกรองเดิมไว้
+  if(day!=null){
+    if(_calDay!==day || _calScope!==(scope||'this')) calDayNameFilter='';
+    _calDay=day; _calScope=scope||'this';
+  }
+  if(_calDay==null) return;
+  const c=calDueByDay();
+  const map=_calScope==='next'?c.nextMap:c.thisMap;
+  const full=(map[_calDay]||[]).slice();
+  const mName=_calScope==='next'?MONTHS[c.nM-1]:MONTHS[c.gM-1];
+  const yShow=_calScope==='next'?(c.nY+543):(c.gY+543);
+  const card=document.getElementById('calDayCard'), body=document.getElementById('calDayBody');
+  card.style.display='';
+  document.getElementById('calDayTitle').textContent=`งานครบกำหนด · ${_calDay} ${mName} ${yShow}`;
+  if(day!=null) card.scrollIntoView({behavior:'smooth',block:'nearest'});
+  // ตัวกรองชื่อผู้รับผิดชอบ
+  const names=[...new Set(full.map(x=>ownerOf(x.it)||'(ไม่ระบุ)'))].sort();
+  const list = calDayNameFilter ? full.filter(x=>(ownerOf(x.it)||'(ไม่ระบุ)')===calDayNameFilter) : full;
+  document.getElementById('calDayHint').textContent=`${list.length} รายการ`;
+  const nameSel=`<div style="margin-bottom:12px"><select class="owner-select" style="max-width:260px" onchange="calDayNameFilter=this.value;renderCalDay()">
+      <option value="">— ทุกคน (${full.length}) —</option>
+      ${names.map(n=>`<option value="${escHtml(n).replace(/"/g,'&quot;')}" ${calDayNameFilter===n?'selected':''}>${escHtml(n)}</option>`).join('')}
+    </select></div>`;
+  if(!full.length){ body.innerHTML=`<div class="empty" style="padding:18px;text-align:center;color:var(--muted)">ไม่มีงานครบกำหนดวันนี้</div>`; return; }
+  body.innerHTML=nameSel+`<div class="tbd-scroll"><table class="tbd-table">
+    <thead><tr><th>รหัส</th><th>รายการ</th><th>หมวด</th><th>ผู้รับผิดชอบ</th><th>กำหนดส่ง</th><th>สถานะงาน</th></tr></thead>
+    <tbody>${list.map(x=>{ const rec=statusOf(curPeriod)[x.it.code]||{}; const w=rec.wf||(rec.done?'approved':'draft');
+      return `<tr style="cursor:pointer" onclick="openItemCard('${x.it.code}',curPeriod)">
+      <td class="mono">${escHtml(x.it.code)}</td>
+      <td>${escHtml(x.it.detail)}</td>
+      <td>${escHtml(x.cat)}</td>
+      <td>${escHtml(ownerOf(x.it)||'—')}</td>
+      <td>${dueBadgeHtml(x.it)||'—'}</td>
+      <td>${wfChip(w)}</td>
+    </tr>`;}).join('')}</tbody>
+  </table></div>`;
+}
 
 /* ---------------- Dashboard ---------------- */
 function renderDash(){
   document.getElementById('dashSub').textContent=`งวด ${periodLabel(curPeriod)} · ติดตามความคืบหน้าของทุกหมวดงาน`;
-  document.getElementById('setupBanner').style.display=API_URL?'none':'flex';
+  const _br=document.getElementById('btnSendReminders'); if(_br) _br.style.display = (CURRENT_ROLE()==='supervisor') ? '' : 'none';
   const ov=overallProgress();
   const pct=ov.total?Math.round(ov.done/ov.total*100):0;
   const doneCat=config.filter(c=>{const p=catProgress(c);return p.total&&p.done===p.total;}).length;
@@ -1646,19 +2170,246 @@ function renderDash(){
     const cls=p.total&&p.done===p.total?'done':p.done>0?'prog':'none';
     const txt=cls==='done'?'เสร็จสมบูรณ์':cls==='prog'?'กำลังดำเนินการ':'ยังไม่เริ่ม';
     const col=CAT_COLORS[cat.id]||'#546374';
-    const el=document.createElement('div');el.className='cat-card';el.onclick=()=>{curTab=cat.id;goPage('check');};
+    const dc=catDueCounts(cat);
+    const warnCls = dc.overdue?' warn-overdue' : dc.near?' warn-near' : '';
+    const dueChip = dc.overdue
+      ? `<span class="due-chip due-overdue">เกินกำหนด ${dc.overdue}</span>`
+      : dc.near ? `<span class="due-chip due-near">ใกล้ครบ ${dc.near}</span>` : '';
+    const el=document.createElement('div');el.className='cat-card'+warnCls;el.onclick=()=>{curTab=cat.id;goPage('check');};
     el.innerHTML=`
       <div class="top">
         <div class="name"><span class="cat-badge" style="background:${col}">${cat.id}</span>${cat.name}</div>
         <span class="status-chip ${cls}">${txt}</span>
       </div>
       <div class="pbar"><i class="ok" style="width:${pc}%"></i></div>
-      <div class="meta"><span>${p.done}/${p.total} รายการ</span><span>${pc}%</span></div>`;
+      <div class="meta"><span>${p.done}/${p.total} รายการ</span><span style="display:flex;gap:6px;align-items:center">${dueChip}<span>${pc}%</span></span></div>`;
     grid.appendChild(el);
   });
   renderTBValidationSummary();
+  renderTBDetail();
+  renderAccrualGroups();
+  renderRevCost();
   if(dashView==='year')renderMatrix();
+  if(dashView==='kpi')renderKPI();
+  if(dashView==='cal')renderCalendar();
 }
+
+/* ---------------- กลุ่มบัญชี ค้างรับ/ค้างจ่าย/รับล่วงหน้า/จ่ายล่วงหน้า ----------------
+   จัดกลุ่มจากชื่อบัญชี (Short Text) ของ TB ตามคำสำคัญ */
+const ACCRUAL_GROUPS=[
+  {key:'accrRecv', title:'ค้างรับ',      kw:['ค้างรับ'],      accent:'var(--green)'},
+  {key:'accrPay',  title:'ค้างจ่าย',     kw:['ค้างจ่าย'],     accent:'var(--red)'},
+  {key:'defRecv',  title:'รับล่วงหน้า',   kw:['รับล่วงหน้า'],   accent:'var(--blue)'},
+  {key:'prepaid',  title:'จ่ายล่วงหน้า',  kw:['จ่ายล่วงหน้า'],  accent:'var(--amber)'},
+];
+function classifyAccrual(name){
+  const s=String(name||'');
+  // เช็ค "ล่วงหน้า" ก่อน เพราะเจาะจงกว่า แล้วค่อย "ค้าง"
+  if(s.indexOf('รับล่วงหน้า')>=0) return 'defRecv';
+  if(s.indexOf('จ่ายล่วงหน้า')>=0) return 'prepaid';
+  if(s.indexOf('ค้างรับ')>=0) return 'accrRecv';
+  if(s.indexOf('ค้างจ่าย')>=0) return 'accrPay';
+  return null;
+}
+function renderAccrualGroups(){
+  const body=document.getElementById('accrualBody');
+  const hint=document.getElementById('accrualHint');
+  if(!body) return;
+  const rows=tbData[ck(curPeriod)];
+  if(!rows||!rows.length){ if(hint)hint.textContent=''; body.innerHTML=`<div class="empty" style="padding:22px;text-align:center;color:var(--muted)">ยังไม่มีข้อมูล TB ของงวดนี้</div>`; return; }
+  const buckets={accrRecv:[],accrPay:[],defRecv:[],prepaid:[]};
+  rows.forEach(r=>{ const g=classifyAccrual(r.text); if(g) buckets[g].push(r); });
+  const total=Object.values(buckets).reduce((n,a)=>n+a.length,0);
+  if(hint)hint.textContent=`${total} บัญชีที่เข้ากลุ่ม`;
+  if(!total){ body.innerHTML=`<div class="empty" style="padding:22px;text-align:center;color:var(--muted)">ไม่พบบัญชีที่มีคำว่า ค้างรับ/ค้างจ่าย/รับล่วงหน้า/จ่ายล่วงหน้า ในงวดนี้</div>`; return; }
+  const panel=(g)=>{
+    const list=buckets[g.key];
+    const sum=list.reduce((n,r)=>n+(Number(r.balance)||0),0);
+    const rowsHtml=list.length? list.map(r=>`<tr>
+        <td class="mono">${escHtml(r.acct)}</td>
+        <td>${escHtml(r.text||'—')}</td>
+        <td class="num ${r.balance<0?'neg':''}">${fmt(r.balance)}</td>
+      </tr>`).join('')
+      : `<tr><td colspan="3" style="text-align:center;color:var(--muted);padding:12px">— ไม่มี —</td></tr>`;
+    return `<div class="accr-panel">
+      <div class="accr-h" style="border-left:3px solid ${g.accent}">
+        <span>${g.title}</span><span class="accr-cnt">${list.length} บัญชี</span>
+      </div>
+      <div class="accr-scroll"><table class="accr-table">
+        <thead><tr><th style="width:80px">รหัสบัญชี</th><th>ชื่อบัญชี</th><th style="text-align:right">Balance</th></tr></thead>
+        <tbody>${rowsHtml}</tbody>
+        <tfoot><tr><td colspan="2">รวม</td><td class="num ${sum<0?'neg':''}">${fmt(sum)}</td></tr></tfoot>
+      </table></div>
+    </div>`;
+  };
+  body.innerHTML=`<div class="accr-grid">${ACCRUAL_GROUPS.map(panel).join('')}</div>
+    <div style="font-size:11.5px;color:var(--muted);margin-top:10px">จัดกลุ่มจากชื่อบัญชี (Short Text) ของ TB ตามคำสำคัญ: ค้างรับ / ค้างจ่าย / รับล่วงหน้า / จ่ายล่วงหน้า</div>`;
+}
+
+/* ---------------- กระทบรายได้และต้นทุนขาย ----------------
+   จับคู่รายได้ (รหัสขึ้นต้น 45) กับต้นทุนขาย (รหัสขึ้นต้น 75) ด้วยเลขท้าย 3 หลัก
+   คำนวณกำไร(ขาดทุน) = รายได้ - ต้นทุน และ % = กำไร/รายได้ · มีช่องคำอธิบายพิมพ์เองได้ */
+function renderRevCost(){
+  const body=document.getElementById('revCostBody');
+  const hint=document.getElementById('revCostHint');
+  if(!body) return;
+  const rows=tbData[ck(curPeriod)];
+  if(!rows||!rows.length){ if(hint)hint.textContent=''; body.innerHTML=`<div class="empty" style="padding:22px;text-align:center;color:var(--muted)">ยังไม่มีข้อมูล TB ของงวดนี้</div>`; return; }
+  // รายได้แสดงเป็นยอดลบใน TB (เครดิต) → กลับเครื่องหมายให้เป็นบวกเพื่ออ่านง่าย
+  const rev={}, cost={};
+  rows.forEach(r=>{ const a=String(r.acct||''); if(/^45/.test(a)) rev[a.slice(-3)]=(rev[a.slice(-3)]||[]).concat(r); else if(/^75/.test(a)) cost[a.slice(-3)]=(cost[a.slice(-3)]||[]).concat(r); });
+  const suffixes=[...new Set([...Object.keys(rev),...Object.keys(cost)])].sort();
+  if(!suffixes.length){ if(hint)hint.textContent=''; body.innerHTML=`<div class="empty" style="padding:22px;text-align:center;color:var(--muted)">ไม่พบบัญชีรายได้ (45xxxx) หรือต้นทุนขาย (75xxxx) ในงวดนี้</div>`; return; }
+  const noteMap=tbNotes[ck(curPeriod)]||{};
+  const canEdit=canEditChecklist();
+  let totRev=0,totCost=0;
+  const bodyRows=suffixes.map(sfx=>{
+    const rl=rev[sfx]||[], cl=cost[sfx]||[];
+    const revAmt=Math.abs(rl.reduce((n,r)=>n+(Number(r.balance)||0),0)); // รายได้เป็นค่าบวก
+    const costAmt=Math.abs(cl.reduce((n,r)=>n+(Number(r.balance)||0),0));
+    totRev+=revAmt; totCost+=costAmt;
+    const gp=revAmt-costAmt; const pct=revAmt?Math.round(gp/revAmt*100):0;
+    const revAcct=rl[0]?rl[0].acct:'—', costAcct=cl[0]?cl[0].acct:'—';
+    const label=(rl[0]&&rl[0].text)||(cl[0]&&cl[0].text)||'';
+    const noteKey='RC:'+sfx;
+    const noteObj=noteMap[noteKey]||{};
+    const noteVal=noteObj.note||'';
+    const noteCell=canEdit
+      ? `<input class="tbd-note-input" value="${escHtml(noteVal).replace(/"/g,'&quot;')}" placeholder="พิมพ์คำอธิบาย..." title="${escHtml(noteObj.by?('โดย '+noteObj.by+(noteObj.at?' · '+noteObj.at:'')):'')}" onchange="saveRevCostNote('${sfx}',this.value)">`
+      : `<span class="tbd-note-ro">${noteVal?escHtml(noteVal):'—'}</span>`;
+    const pctCls=pct>=15?'rc-pct-hi':pct>0?'rc-pct-mid':'rc-pct-lo';
+    return `<tr>
+      <td class="mono">${escHtml(revAcct)}</td>
+      <td>${escHtml(label)}</td>
+      <td class="num">${fmt(revAmt)}</td>
+      <td class="mono">${escHtml(costAcct)}</td>
+      <td class="num">${fmt(costAmt)}</td>
+      <td class="num ${gp<0?'neg':''}">${fmt(gp)}</td>
+      <td class="num"><span class="rc-pct ${pctCls}">${pct}%</span></td>
+      <td class="tbd-note">${noteCell}</td>
+    </tr>`;
+  }).join('');
+  const totGp=totRev-totCost; const totPct=totRev?Math.round(totGp/totRev*100):0;
+  if(hint)hint.textContent=`งวด ${periodLabel(curPeriod)}`;
+  body.innerHTML=`<div class="tbd-scroll"><table class="tbd-table rc-table">
+    <thead><tr>
+      <th>รหัสรายได้</th><th>ชื่อบัญชี</th><th style="text-align:right">รายได้</th>
+      <th>รหัสต้นทุน</th><th style="text-align:right">ต้นทุนขาย</th>
+      <th style="text-align:right">กำไร(ขาดทุน)</th><th style="text-align:right">%</th><th>คำอธิบาย</th>
+    </tr></thead>
+    <tbody>${bodyRows}</tbody>
+    <tfoot><tr>
+      <td colspan="2">รวมทั้งหมด</td>
+      <td class="num">${fmt(totRev)}</td>
+      <td></td>
+      <td class="num">${fmt(totCost)}</td>
+      <td class="num ${totGp<0?'neg':''}">${fmt(totGp)}</td>
+      <td class="num">${totPct}%</td>
+      <td></td>
+    </tr></tfoot>
+  </table></div>
+  <div style="font-size:11.5px;color:var(--muted);margin-top:10px">จับคู่รายได้ (รหัสขึ้นต้น 45) กับต้นทุนขาย (รหัสขึ้นต้น 75) ด้วยเลขท้าย 3 หลัก · รายได้แสดงเป็นค่าบวกเพื่ออ่านง่าย · กำไร(ขาดทุน) = รายได้ − ต้นทุน</div>`;
+}
+async function saveRevCostNote(sfx, note){
+  if(!canEditChecklist()){ toast('คุณมีสิทธิ์ดูอย่างเดียว',true); renderRevCost(); return; }
+  const k=ck(curPeriod), acctKey='RC:'+sfx;
+  if(!tbNotes[k]) tbNotes[k]={};
+  tbNotes[k][acctKey]={ note:note, by:CURRENT_USER_NAME(), at:nowStamp() };
+  save('mpl_tbnotes',tbNotes);
+  if(API_URL){ const r=await apiCall('setTBNote',{company:curCompany,period:curPeriod,acct:acctKey,note,by:CURRENT_USER_NAME()}); if(!r||!r.ok){ toast('บันทึกคำอธิบายไม่สำเร็จ',true); return; } }
+  toast('บันทึกคำอธิบายแล้ว');
+}
+
+/* ---------------- TB issue detail table (filterable) on dashboard ---------------- */
+let tbDetailFilter='all', tbDetailSearch='';
+let _tbdIssues=[], _tbdByAcct={};
+function renderTBDetail(){
+  const ctrl=document.getElementById('tbDetailControls');
+  const body=document.getElementById('tbDetailBody');
+  const hint=document.getElementById('tbDetailHint');
+  if(!ctrl||!body) return;
+  const rows=tbData[ck(curPeriod)];
+  if(!rows||!rows.length){
+    ctrl.innerHTML=''; if(hint)hint.textContent='';
+    body.innerHTML=`<div class="empty" style="padding:24px 20px;text-align:center;color:var(--muted)">งวด ${periodLabel(curPeriod)} ยังไม่มีข้อมูล TB — <a onclick="goPage('upload')" style="cursor:pointer">ไปหน้าอัปโหลด TB →</a></div>`;
+    return;
+  }
+  _tbdByAcct={}; rows.forEach(r=>{_tbdByAcct[r.acct]=r;});
+  _tbdIssues=validateTB(rows);
+  const errs=_tbdIssues.filter(i=>i.sev==='error').length;
+  const warns=_tbdIssues.filter(i=>i.sev==='warn').length;
+  if(hint)hint.textContent=`งวด ${periodLabel(curPeriod)} · พบ ${_tbdIssues.length} รายการ`;
+  ctrl.innerHTML=`<div class="tbd-filters">
+    <button class="tbd-fbtn ${tbDetailFilter==='all'?'active':''}" onclick="setTbDetailFilter('all')">ทั้งหมด <span>${_tbdIssues.length}</span></button>
+    <button class="tbd-fbtn err ${tbDetailFilter==='error'?'active':''}" onclick="setTbDetailFilter('error')">ผิดพลาด <span>${errs}</span></button>
+    <button class="tbd-fbtn warn ${tbDetailFilter==='warn'?'active':''}" onclick="setTbDetailFilter('warn')">เตือน <span>${warns}</span></button>
+    <input id="tbDetailSearchInput" class="tbd-search" placeholder="ค้นหา รหัสบัญชี / ชื่อบัญชี / รายละเอียด..." value="${String(tbDetailSearch).replace(/"/g,'&quot;')}" oninput="onTbDetailSearch(this.value)">
+  </div>`;
+  renderTbdRows();
+}
+function renderTbdRows(){
+  const body=document.getElementById('tbDetailBody');
+  if(!body) return;
+  let list=_tbdIssues;
+  if(tbDetailFilter==='error') list=list.filter(i=>i.sev==='error');
+  else if(tbDetailFilter==='warn') list=list.filter(i=>i.sev==='warn');
+  const q=String(tbDetailSearch||'').trim().toLowerCase();
+  if(q){
+    list=list.filter(i=>{
+      const first=String(i.acct).split(',')[0].trim();
+      const r=_tbdByAcct[first]; const name=r?(r.text||''):'';
+      return String(i.acct).toLowerCase().includes(q)||name.toLowerCase().includes(q)||String(i.msg).toLowerCase().includes(q);
+    });
+  }
+  if(!list.length){
+    body.innerHTML=`<div class="empty" style="padding:22px;text-align:center;color:var(--muted)">ไม่พบรายการที่ตรงกับเงื่อนไข</div>`;
+    return;
+  }
+  const noteMap = tbNotes[ck(curPeriod)]||{};
+  const canEdit = canEditChecklist(); // นักบัญชี+หัวหน้าแผนก พิมพ์ได้ / ผู้จัดการอ่านอย่างเดียว
+  const rowsHtml=list.map(i=>{
+    const first=String(i.acct).split(',')[0].trim();
+    const r=_tbdByAcct[first];
+    const name=r?(r.text||'—'):'—';
+    const bal=r?fmt(r.balance):'—';
+    const balNeg=r&&r.balance<0;
+    const acctKey=String(i.acct);
+    const noteObj=noteMap[acctKey]||{};
+    const noteVal=noteObj.note||'';
+    const byTip=noteObj.by?`โดย ${noteObj.by}${noteObj.at?' · '+noteObj.at:''}`:'';
+    const acctArg=acctKey.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    const noteCell = canEdit
+      ? `<input class="tbd-note-input" value="${escHtml(noteVal).replace(/"/g,'&quot;')}" placeholder="พิมพ์คำอธิบาย..." title="${escHtml(byTip)}" onchange="saveTBNote('${acctArg}',this.value)">`
+      : `<span class="tbd-note-ro" title="${escHtml(byTip)}">${noteVal?escHtml(noteVal):'—'}</span>`;
+    return `<tr>
+      <td class="mono">${escHtml(i.acct)}</td>
+      <td>${escHtml(name)}</td>
+      <td class="num ${balNeg?'neg':''}">${bal}</td>
+      <td><span class="sev ${i.sev}">${i.sev==='error'?'ผิดพลาด':'เตือน'}</span></td>
+      <td class="tbd-msg">${escHtml(i.msg)}</td>
+      <td class="tbd-note">${noteCell}</td>
+    </tr>`;
+  }).join('');
+  body.innerHTML=`<div class="tbd-scroll"><table class="tbd-table">
+    <thead><tr><th>รหัสบัญชี</th><th>ชื่อบัญชี</th><th style="text-align:right">ยอด Balance</th><th>สถานะ</th><th>รายละเอียด</th><th>คำอธิบาย (Note)</th></tr></thead>
+    <tbody>${rowsHtml}</tbody></table></div>`;
+}
+function escHtml(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+async function saveTBNote(acct, note){
+  if(!canEditChecklist()){ toast('คุณมีสิทธิ์ดูอย่างเดียว แก้ไขคำอธิบายไม่ได้',true); renderTbdRows(); return; }
+  const k=ck(curPeriod);
+  if(!tbNotes[k]) tbNotes[k]={};
+  tbNotes[k][acct]={ note:note, by:CURRENT_USER_NAME(), at:nowStamp() };
+  save('mpl_tbnotes',tbNotes);
+  if(API_URL){
+    const r=await apiCall('setTBNote',{company:curCompany,period:curPeriod,acct,note,by:CURRENT_USER_NAME()});
+    if(!r||!r.ok){ toast('บันทึกคำอธิบายไม่สำเร็จ',true); return; }
+  }
+  renderTbdRows(); // ให้แถวที่ acct เดียวกันอัปเดตตาม
+  toast('บันทึกคำอธิบายแล้ว');
+}
+function setTbDetailFilter(f){ tbDetailFilter=f; renderTBDetail(); }
+function onTbDetailSearch(v){ tbDetailSearch=v; renderTbdRows(); } // อัปเดตเฉพาะตาราง ไม่ rebuild ช่องค้นหา (โฟกัสไม่หลุด)
 
 function renderTBValidationSummary(){
   const body=document.getElementById('tbValBody');
@@ -1677,25 +2428,14 @@ function renderTBValidationSummary(){
   const warns=issues.filter(i=>i.sev==='warn').length;
   const flaggedAccts=new Set();
   issues.forEach(i=>{ String(i.acct).split(',').map(s=>s.trim()).forEach(a=>flaggedAccts.add(a)); });
-  hint.innerHTML=`งวด ${periodLabel(curPeriod)} · <a onclick="goPage('upload')" style="cursor:pointer">ดูรายละเอียด →</a>`;
+  hint.textContent=`งวด ${periodLabel(curPeriod)}`;
 
-  const statHtml=`<div class="val-summary" style="margin:0 0 16px">
+  // แสดงเฉพาะการ์ดสรุป 4 ช่อง — รายการผิดปกติแบบละเอียดดูได้ที่บ็อก "รายละเอียดผลตรวจ TB" ด้านล่าง
+  body.innerHTML=`<div class="val-summary" style="margin:0">
     <div class="val-box"><div class="n">${rows.length}</div><div class="l">บัญชีทั้งหมด</div></div>
     <div class="val-box ${errs?'err':'ok'}"><div class="n">${errs}</div><div class="l">ข้อผิดพลาด (Error)</div></div>
     <div class="val-box ${warns?'warn':'ok'}"><div class="n">${warns}</div><div class="l">คำเตือน (Warning)</div></div>
     <div class="val-box ok"><div class="n">${rows.length-flaggedAccts.size}</div><div class="l">ผ่านการตรวจสอบ</div></div>
-  </div>`;
-
-  if(!issues.length){
-    body.innerHTML=statHtml+`<div class="issue-list" style="border-color:var(--green-line)"><div class="ih" style="background:var(--green-bg);color:var(--green)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>ผ่านการตรวจสอบทั้งหมด ไม่พบรายการผิดปกติ</div></div>`;
-    return;
-  }
-  // แสดงตัวอย่าง 5 รายการแรกในแดชบอร์ด ดูทั้งหมดได้ที่หน้าอัปโหลด
-  const preview=issues.slice(0,5);
-  body.innerHTML=statHtml+`<div class="issue-list">
-    <div class="ih"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>พบรายการผิดปกติ ${issues.length} รายการ</div>
-    ${preview.map(i=>`<div class="issue-row"><span class="sev ${i.sev}">${i.sev==='error'?'ผิดพลาด':'เตือน'}</span><span>${i.msg}</span><span class="mono" style="color:var(--muted)">บัญชี ${i.acct}</span></div>`).join('')}
-    ${issues.length>preview.length?`<div style="padding:9px 15px;border-top:1px solid var(--line);font-size:12.5px"><a onclick="goPage('upload')" style="cursor:pointer">ดูอีก ${issues.length-preview.length} รายการที่หน้าอัปโหลด TB →</a></div>`:''}
   </div>`;
 }
 
@@ -1706,7 +2446,8 @@ function renderMatrix(){
   // header
   let head='<thead><tr>'
     +'<th class="col-code">รหัส</th>'
-    +'<th class="col-detail">รายการ (Detail)</th>';
+    +'<th class="col-detail">รายการ (Detail)</th>'
+    +'<th class="col-owner">ผู้รับผิดชอบ</th>';
   for(let m=1;m<=12;m++){
     const q=(m%3===0)?` · Q${m/3}`:'';
     head+=`<th class="${qClass(m)}">${MONTHS[m-1]}${q}</th>`;
@@ -1716,19 +2457,22 @@ function renderMatrix(){
   let body='<tbody>';
   config.forEach(cat=>{
     const col=CAT_COLORS[cat.id]||'#546374';
-    body+=`<tr class="m-catrow"><td colspan="14"><span class="cat-badge" style="background:${col}">${cat.id}</span>${cat.name}</td></tr>`;
+    body+=`<tr class="m-catrow"><td colspan="15"><span class="cat-badge" style="background:${col}">${cat.id}</span>${cat.name}</td></tr>`;
     enabledItemsOf(cat).forEach(it=>{
       const showTips = it.tips && it.tipsShow;
       const tipsIcon = showTips ? `<span class="tips-flag-inline" onclick="event.stopPropagation();viewTips('${it.code}')" title="ดู TIPS การตรวจสอบ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17a1 1 0 001 1h6a1 1 0 001-1v-2.3A7 7 0 0012 2z"/></svg></span>` : '';
-      body+=`<tr><td class="code">${it.code}</td><td class="detail">${it.detail}${tipsIcon}</td>`;
+      const ownerTxt=ownerOf(it);
+      body+=`<tr><td class="code">${it.code}</td><td class="detail">${it.detail}${tipsIcon}</td><td class="m-owner">${ownerTxt||'—'}</td>`;
       periods.forEach(p=>{
         const rec=statusOf(p)[it.code]||{};
         const wf=rec.wf||(rec.done?'approved':'draft');
         const link=rec.link;
         const mgrFlag = hasManagerComment(rec);
         const flagHtml = mgrFlag ? `<span class="mgr-flag" title="มีความเห็นจากผู้จัดการ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg></span>` : '';
-        const tip=`${it.detail} · ${periodLabel(p)}${link?' · มีลิงก์เอกสาร':''}${wf==='submitted'?' · รอตรวจสอบ':wf==='approved'?' · อนุมัติแล้ว':''}`;
-        if(wf==='approved'){
+        const tip=`${it.detail} · ${periodLabel(p)}${link?' · มีลิงก์เอกสาร':''}${wf==='submitted'?' · รอตรวจสอบ':wf==='approved'?' · อนุมัติแล้ว':wf==='rejected'?' · ตีกลับ รอแก้ไข':''}`;
+        if(isPeriodDisabled(it.code,p)){
+          body+=`<td class="mcell na" title="ไม่มีในแผนงวดนี้ (ปิดช่อง) · ${it.detail} · ${periodLabel(p)}" onclick="openItemCard('${it.code}','${p}')">${flagHtml}</td>`;
+        }else if(wf==='approved'){
           body+=`<td class="mcell ok${link?' has-link':''}" title="${tip}" onclick="openItemCard('${it.code}','${p}')">`
             +`<span class="ok-lbl">OK</span>`
             +(link?`<svg class="ok-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>`:'')
@@ -1736,6 +2480,8 @@ function renderMatrix(){
             +`</td>`;
         }else if(wf==='submitted'){
           body+=`<td class="mcell submitted" title="${tip}" onclick="openItemCard('${it.code}','${p}')"><span class="ok-lbl">ส่ง</span>${flagHtml}</td>`;
+        }else if(wf==='rejected'){
+          body+=`<td class="mcell rejected" title="${tip}" onclick="openItemCard('${it.code}','${p}')"><span class="ok-lbl">ตีกลับ</span>${flagHtml}</td>`;
         }else{
           body+=`<td class="mcell empty" title="${tip}" onclick="openItemCard('${it.code}','${p}')">${flagHtml}</td>`;
         }
@@ -1770,9 +2516,10 @@ function nowStamp(){ return new Date().toLocaleDateString('th-TH',{day:'2-digit'
 function icTbRowsFor(code,period){
   let item=null;
   config.forEach(cat=>cat.items.forEach(it=>{if(it.code===code) item=it;}));
-  if(!item || !item.gl || !item.gl.length) return {item,rows:[]};
+  const gls=glArr(item&&item.gl);
+  if(!item || !gls.length) return {item,rows:[]};
   const tbRows=tbData[ckOf(curCompany,period)]||[];
-  const glSet=new Set(item.gl);
+  const glSet=new Set(gls);
   return {item, rows: tbRows.filter(r=>glSet.has(r.acct))};
 }
 
@@ -1788,14 +2535,14 @@ function openItemCard(code,period){
   const wf=rec.wf||(rec.done?'approved':'draft');
   const badge=document.getElementById('icStatusBadge');
   badge.className='ic-status-badge '+wf;
-  badge.textContent = wf==='approved'?'อนุมัติแล้ว':wf==='submitted'?'รอตรวจสอบ':'ยังไม่ส่งงาน';
+  badge.textContent = wf==='approved'?'อนุมัติแล้ว':wf==='submitted'?'รอตรวจสอบ':wf==='rejected'?'ตีกลับ — รอแก้ไข':'ยังไม่ส่งงาน';
 
   // TB summary
   const tbWrap=document.getElementById('icTbSummary');
-  if(!item || !item.gl || !item.gl.length){
+  if(!item || !glArr(item.gl).length){
     tbWrap.innerHTML=`<div class="ic-tb-empty">ยังไม่ได้ผูกรหัสบัญชี (GL) กับรายการนี้ — ไปตั้งค่าที่หน้า "ตั้งค่ารายการ"</div>`;
   }else if(!rows.length){
-    tbWrap.innerHTML=`<div class="ic-tb-empty">ยังไม่มีข้อมูล TB ของงวดนี้ หรือไม่พบรหัสบัญชี ${item.gl.join(', ')} ใน TB</div>`;
+    tbWrap.innerHTML=`<div class="ic-tb-empty">ยังไม่มีข้อมูล TB ของงวดนี้ หรือไม่พบรหัสบัญชี ${glArr(item.gl).join(', ')} ใน TB</div>`;
   }else{
     let sum=0;
     const trs=rows.map(r=>{sum+=r.balance;return `<tr class="${r.balance<0?'neg':''}"><td class="mono">${r.acct}</td><td>${r.text||''}</td><td class="num">${fmt(r.balance)}</td></tr>`;}).join('');
@@ -1854,14 +2601,21 @@ function buildIcFooterAndCommentBox(rec,role,wf,item){
     const mine=[...thread].reverse().find(e=>e.role==='accountant');
     commentInput.value=mine?mine.text:'';
     let btns=`<button class="btn btn-ghost" onclick="closeModal('itemCardModal')">ปิด</button>`;
-    if(canEdit) btns+=`<button class="btn" style="background:#f5a524;color:#fff" onclick="icSubmit()">${wf==='submitted'?'ส่งงานอีกครั้ง':'ส่งงาน'}</button>`;
+    if(canEdit) btns+=`<button class="btn" style="background:#f5a524;color:#fff" onclick="icSubmit()">${(wf==='submitted'||wf==='rejected')?'ส่งงานอีกครั้ง':'ส่งงาน'}</button>`;
     footer.innerHTML=btns;
   }else if(role==='supervisor'){
     commentBox.style.display='flex';
     commentInput.placeholder='พิมพ์ความเห็น...';
     commentInput.value='';
     saveBtn.style.display='';
+    const code=item?item.code:icCurCode;
+    const isNA=isPeriodDisabled(code,icCurPeriod);
     let btns=`<button class="btn btn-ghost" onclick="closeModal('itemCardModal')">ปิด</button>`;
+    // สลับสถานะ "ไม่มีในแผน (ปิดช่อง)" — เฉพาะหัวหน้าแผนก สำหรับรายการที่งวดนี้ไม่ต้องทำจริงๆ
+    // ทำให้รายการนั้นไม่ถูกนับใน % ความคืบหน้า และตารางปีจะโชว์เป็นลายตารางแทนช่องว่างเฉยๆ
+    btns+=`<button type="button" class="btn-period-na${isNA?' active':''}" onclick="icToggleNA()">${isNA?'เปิดช่องกลับเข้าแผน':'ไม่มีในแผน (ปิดช่อง)'}</button>`;
+    // ตีกลับ: เฉพาะรายการที่นักบัญชี "ส่งงาน" มาแล้ว (รอตรวจสอบ) — ส่งกลับไปให้แก้ไขพร้อมเหตุผล
+    if(wf==='submitted') btns+=`<button class="btn" style="background:#fff;color:var(--red);border:1px solid var(--red)" onclick="icReject()">ตีกลับ</button>`;
     if(wf==='approved') btns+=`<button class="btn btn-ghost" style="color:var(--red)" onclick="icReopen()">เปิดใหม่ (ยกเลิกอนุมัติ)</button>`;
     btns+=`<button class="btn btn-pri" style="background:var(--green)" onclick="icApprove()">ตกลง (อนุมัติ)</button>`;
     footer.innerHTML=btns;
@@ -1928,6 +2682,23 @@ async function icApprove(){
   toast('อนุมัติแล้ว');
 }
 
+async function icReject(){
+  if(CURRENT_ROLE()!=='supervisor'){toast('คุณไม่มีสิทธิ์ตีกลับ',true);return;}
+  const reason=document.getElementById('icCommentInput').value.trim();
+  if(!reason){ toast('กรุณาระบุเหตุผลการตีกลับในช่องความเห็นก่อน',true); document.getElementById('icCommentInput').focus(); return; }
+  const period=icCurPeriod, code=icCurCode;
+  const st=statusOf(period); const rec=st[code]||{};
+  let thread=parseNoteThread(rec.note);
+  thread.push({ts:nowStamp(),name:CURRENT_USER_NAME(),role:'supervisor',text:'⟲ ตีกลับ: '+reason});
+  rec.note=JSON.stringify(thread);
+  rec.wf='rejected'; rec.done=false; rec.by=''; rec.at='';
+  st[code]=rec; save('mpl_status',statusData);
+  if(API_URL) await apiCall('setStatus',{company:curCompany,period,code,record:rec});
+  closeModal('itemCardModal');
+  renderMatrix(); renderCheck(); renderDash();
+  toast('ตีกลับรายการแล้ว — แจ้งนักบัญชีให้แก้ไขและส่งใหม่');
+}
+
 async function icReopen(){
   if(CURRENT_ROLE()!=='supervisor'){toast('คุณไม่มีสิทธิ์',true);return;}
   if(!confirm('ยกเลิกการอนุมัติรายการนี้ และเปิดให้แก้ไขใหม่?'))return;
@@ -1939,6 +2710,15 @@ async function icReopen(){
   closeModal('itemCardModal');
   renderMatrix(); renderCheck(); renderDash();
   toast('ยกเลิกการอนุมัติแล้ว เปิดให้แก้ไขใหม่');
+}
+
+// สลับสถานะ "ไม่มีในแผน (ปิดช่อง)" จากปุ่มในการ์ดโดยตรง — ใช้ icCurCode/icCurPeriod ที่ตั้งไว้ตอนเปิดการ์ด (openItemCard)
+// togglePeriodDisabled ข้างในจะ sync ขึ้น Sheet และ render ตาราง/เช็คลิสต์เบื้องหลังให้เองอยู่แล้ว
+// จากนั้นเปิดการ์ดซ้ำ (re-render) เพื่อให้ปุ่มและ badge สถานะในการ์ดอัปเดตทันทีโดยไม่ต้องปิดการ์ด
+async function icToggleNA(){
+  if(!icCurCode||!icCurPeriod) return;
+  await togglePeriodDisabled(icCurCode,icCurPeriod);
+  openItemCard(icCurCode,icCurPeriod);
 }
 
 async function icAddComment(){
@@ -1975,11 +2755,9 @@ async function toggleMonth(code,period){
 
 
 function canCloseUnplanned(){
-  const u=(typeof currentUser!=='undefined' && currentUser)?currentUser:{};
-  const role=String(u.role||u.position||'').toLowerCase();
-  const roleTh=String(u.role||u.position||'');
-  return canAdmin() || role.includes('head') || role.includes('section head') ||
-         roleTh.includes('หัวหน้าแผนก') || roleTh.includes('ผู้ดูแลระบบ');
+  // เฉพาะหัวหน้าแผนก (supervisor) เท่านั้นที่ปิดช่อง N/A ได้ — ใช้ระบบสิทธิ์เดียวกับทั้งแอป (CURRENT_ROLE)
+  // บัญชี admin เริ่มต้น (DEFAULT_ADMIN) ก็มี authRole เป็น 'supervisor' อยู่แล้ว จึงครอบคลุมกรณีผู้ดูแลระบบด้วย
+  return CURRENT_ROLE()==='supervisor';
 }
 
 function isPeriodDisabled(code, period=curPeriod){
@@ -1999,6 +2777,96 @@ async function togglePeriodDisabled(code, period=curPeriod){
   renderCheck();renderDash();
 }
 
+/* ---------------- Owner (ผู้รับผิดชอบประจำ) ----------------
+   เก็บเป็นค่าประจำของแต่ละรายการใน config (it.owner) → ตั้งครั้งเดียว ใช้ได้ทุกเดือน/ทุกปี
+   ไม่ต้องระบุใหม่ทุกงวด (เหมาะกับงานที่หมุนเวียนผู้รับผิดชอบนานๆ ที) */
+function ownerOptionsHtml(selected){
+  let opts=`<option value="">— ไม่ระบุ —</option>`;
+  members.forEach(m=>{ if(m.name){ const nm=String(m.name).replace(/"/g,'&quot;'); opts+=`<option value="${nm}" ${selected===m.name?'selected':''}>${m.name}${m.role?' · '+m.role:''}</option>`; } });
+  return opts;
+}
+// ผู้รับผิดชอบที่มีผลจริง: ค่าประจำของรายการก่อน ถ้าไม่มีค่อย fallback ไปดูของงวดเก่า (ข้อมูลที่เคยตั้งไว้)
+function ownerOf(it,period){ return (it&&it.owner) || (statusOf(period||curPeriod)[it.code]||{}).owner || ''; }
+function ownerCellHtml(it){
+  if(!canEditChecklist()){
+    const nm=ownerOf(it);
+    return `<span style="font-size:12.5px;color:${nm?'var(--ink)':'var(--muted)'}">${nm||'—'}</span>`;
+  }
+  return `<select class="owner-select" onclick="event.stopPropagation()" onchange="setItemDefaultOwner('${it.code}',this.value)" title="ผู้รับผิดชอบประจำรายการนี้ (ใช้ทุกเดือน)">${ownerOptionsHtml(it.owner||'')}</select>`;
+}
+// ตั้งผู้รับผิดชอบประจำ = เขียนลง config แล้วบันทึกขึ้นชีต (ใช้ได้ทุกงวด ไม่ต้องตั้งใหม่รายเดือน)
+async function setItemDefaultOwner(code,ownerName){
+  if(!canEditChecklist()){toast('คุณไม่มีสิทธิ์แก้ไข (ดูได้อย่างเดียว)',true);return;}
+  let found=null;
+  config.forEach(cat=>(cat.items||[]).forEach(it=>{ if(it.code===code) found=it; }));
+  if(!found) return;
+  found.owner=ownerName||'';
+  configByCompany[curCompany]=config; save('mpl_config_by_company',configByCompany);
+  if(API_URL){ const r=await apiCall('setConfig',{company:curCompany,config}); if(!r||!r.ok){ toast('บันทึกผู้รับผิดชอบไม่สำเร็จ',true); } }
+  renderCheck(); renderDash();
+  if(document.getElementById('page-admin')?.classList.contains('active')) renderAdmin();
+  toast(ownerName?`กำหนดผู้รับผิดชอบ: ${ownerName}`:'ล้างผู้รับผิดชอบแล้ว');
+}
+
+/* ---------------- Due date (กำหนดส่ง) ----------------
+   เก็บเป็น "วันที่ของเดือน" (it.due = 1-31) ใน config ใช้ทุกเดือนจนกว่าจะเปลี่ยน
+   สถานะเตือน: เทียบวันครบกำหนดของงวดที่เลือกกับวันนี้ เฉพาะงานที่ยังไม่เสร็จ */
+const DUE_NEAR_DAYS=3;
+function dueDateOf(it, period){
+  const d=Number(it&&it.due); if(!d||d<1||d>31) return null;
+  const [y,m]=(period||curPeriod).split('-').map(Number);
+  let gY=y-543, gM=m; // แปลงปีพุทธ -> ค.ศ. เพื่อคำนวณวันที่จริง
+  if(String(it.dueMode||'')==='next'){ gM=gM+1; if(gM>12){gM=1;gY=gY+1;} } // ภายในวันที่ due ของเดือนถัดไป
+  const last=new Date(gY,gM,0).getDate();
+  return new Date(gY,gM-1,Math.min(d,last));
+}
+function todayMidnight(){ const n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate()); }
+// คืนสถานะกำหนดส่ง: 'done' | 'none' | 'overdue' | 'near' | 'upcoming'
+function dueStatus(it, period){
+  const wf=(statusOf(period||curPeriod)[it.code]||{}); const w=wf.wf||(wf.done?'approved':'draft');
+  if(w==='approved') return 'done';
+  const dd=dueDateOf(it,period); if(!dd) return 'none';
+  const days=Math.round((dd-todayMidnight())/86400000);
+  if(days<0) return 'overdue';
+  if(days<=DUE_NEAR_DAYS) return 'near';
+  return 'upcoming';
+}
+function dueDaysLeft(it, period){ const dd=dueDateOf(it,period); if(!dd) return null; return Math.round((dd-todayMidnight())/86400000); }
+function dueBadgeHtml(it, period){
+  const d=Number(it&&it.due); if(!d) return '';
+  period=period||curPeriod;
+  const dd=dueDateOf(it,period); if(!dd) return '';
+  const mon=MONTHS[dd.getMonth()]||''; // เดือนจริงของวันครบกำหนด (รองรับเดือนถัดไป)
+  const next=String(it.dueMode||'')==='next';
+  const days=dueDaysLeft(it,period);
+  const st=dueStatus(it,period);
+  let cls='due-upcoming', suffix='';
+  if(st==='overdue'){ cls='due-overdue'; suffix=' · เกิน '+Math.abs(days)+'วัน'; }
+  else if(st==='near'){ cls='due-near'; suffix=days===0?' · วันนี้':(' · อีก '+days+'วัน'); }
+  else if(st==='done'){ cls='due-done'; }
+  return `<span class="due-badge ${cls}" title="กำหนดส่งทุกวันที่ ${d} ของเดือน${next?'ถัดไป':'นั้น'}">⏰ ${('0'+d).slice(-2)} ${mon}${next?'*':''}${suffix}</span>`;
+}
+function dueOptionsHtml(sel){
+  let opts='<option value="">— ไม่กำหนด —</option>';
+  for(let d=1;d<=31;d++){ opts+=`<option value="${d}" ${Number(sel)===d?'selected':''}>ทุกวันที่ ${d}</option>`; }
+  return opts;
+}
+function dueSelectHtml(it){
+  return `<select class="owner-select" onclick="event.stopPropagation()" onchange="setItemDue('${it.code}',this.value)" title="วันครบกำหนดส่งประจำรายการนี้ (ใช้ทุกเดือน)">${dueOptionsHtml(it.due)}</select>`;
+}
+async function setItemDue(code, dueVal){
+  if(!canEditItemConfig()){toast('คุณไม่มีสิทธิ์ตั้งวันครบกำหนด',true);return;}
+  let found=null;
+  config.forEach(cat=>(cat.items||[]).forEach(it=>{ if(it.code===code) found=it; }));
+  if(!found) return;
+  found.due = dueVal===''?'':Number(dueVal);
+  configByCompany[curCompany]=config; save('mpl_config_by_company',configByCompany);
+  if(API_URL){ const r=await apiCall('setConfig',{company:curCompany,config}); if(!r||!r.ok){ toast('บันทึกวันครบกำหนดไม่สำเร็จ',true); } }
+  renderCheck(); renderDash();
+  if(document.getElementById('page-admin')?.classList.contains('active')) renderAdmin();
+  toast(dueVal?`กำหนดส่งทุกวันที่ ${dueVal}`:'ล้างวันครบกำหนดแล้ว');
+}
+
 function renderCheck(){
   const tabs=document.getElementById('checkTabs');tabs.innerHTML='';
   config.forEach(cat=>{
@@ -2015,12 +2883,13 @@ function renderCheck(){
   const readOnly=!canEditChecklist(); // ผู้จัดการ (manager) ดูได้อย่างเดียว แก้อะไรไม่ได้ (แต่ยังคอมเมนต์ได้ในการ์ด)
   const banner=document.getElementById('checkViewOnlyBanner');
   if(banner) banner.style.display = readOnly ? 'flex' : 'none';
-  if(!cat){body.innerHTML='<tr><td colspan="7"><div class="empty">ยังไม่มีรายการ</div></td></tr>';return;}
+  if(!cat){body.innerHTML='<tr><td colspan="8"><div class="empty">ยังไม่มีรายการ</div></td></tr>';return;}
   enabledItemsOf(cat).forEach(it=>{
     const rec=st[it.code]||{};
     const wf=rec.wf||(rec.done?'approved':'draft');
-    const tr=document.createElement('tr');if(wf==='approved')tr.className='is-done';
-    const glTags=(it.gl||[]).map(g=>`<span class="gl-tag">${g}</span>`).join('');
+    const isNA=isPeriodDisabled(it.code);
+    const tr=document.createElement('tr');if(wf==='approved')tr.className='is-done';if(isNA)tr.className=(tr.className?tr.className+' ':'')+'is-na';
+    const glTags=glArr(it.gl).map(g=>`<span class="gl-tag">${g}</span>`).join('');
     const showTips = it.tips && it.tipsShow;
     const tipsIcon = showTips ? `<span class="tips-flag-inline" onclick="event.stopPropagation();viewTips('${it.code}')" title="ดู TIPS การตรวจสอบ" style="vertical-align:middle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17a1 1 0 001 1h6a1 1 0 001-1v-2.3A7 7 0 0012 2z"/></svg></span>` : '';
     const mgrFlag=hasManagerComment(rec);
@@ -2029,16 +2898,19 @@ function renderCheck(){
     const openCard=`openItemCard('${it.code}',curPeriod)`;
     const ckboxInner = wf==='approved'
       ? `<svg viewBox="0 0 24 24" style="opacity:1"><path d="M20 6L9 17l-5-5"/></svg>`
-      : wf==='submitted' ? `<span style="font-size:9px;font-weight:800;color:#fff">ส่ง</span>` : '';
+      : wf==='submitted' ? `<span style="font-size:9px;font-weight:800;color:#fff">ส่ง</span>`
+      : wf==='rejected' ? `<span style="font-size:12px;font-weight:800;color:#fff">!</span>` : '';
     const linkTxt = rec.link
       ? `<a class="link-btn" href="${rec.link}" target="_blank" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>เปิด</a>`
       : `<span style="font-size:12px;color:var(--muted)">— ไม่มีลิงก์ —</span>`;
     const whoTxt = wf==='approved' ? `อนุมัติ ${rec.by||''}<br>${rec.at||''}`
-      : wf==='submitted' ? `ส่งโดย ${rec.submittedBy||''}<br>${rec.submittedAt||''}` : '—';
+      : wf==='submitted' ? `ส่งโดย ${rec.submittedBy||''}<br>${rec.submittedAt||''}`
+      : wf==='rejected' ? `<span style="color:var(--red);font-weight:600">ตีกลับ — รอแก้ไข</span>` : '—';
     tr.innerHTML=`
-      <td><div class="ckbox ${wf==='approved'?'on':wf} " onclick="${openCard}" style="cursor:pointer" title="คลิกเพื่อเปิดรายละเอียด">${ckboxInner}</div></td>
+      <td><div class="ckbox ${isNA?'na':(wf==='approved'?'on':wf)} " onclick="${openCard}" style="cursor:pointer" title="คลิกเพื่อเปิดรายละเอียด">${isNA?'':ckboxInner}</div></td>
       <td class="code-cell" style="cursor:pointer" onclick="${openCard}">${it.code}</td>
-      <td class="detail-cell" style="cursor:pointer" onclick="${openCard}"><b>${it.detail}${tipsIcon}</b>${glTags?`<div class="gl-tags">${glTags}</div>`:''}</td>
+      <td class="detail-cell" style="cursor:pointer" onclick="${openCard}"><b>${it.detail}${tipsIcon}</b>${isNA?'<span class="na-chip">ไม่มีในแผน</span>':(dueBadgeHtml(it)?' '+dueBadgeHtml(it):'')}${glTags?`<div class="gl-tags">${glTags}</div>`:''}</td>
+      <td class="owner-cell">${ownerCellHtml(it)}</td>
       <td><span class="out-tag">${it.output||'-'}</span></td>
       <td>${linkTxt}</td>
       <td class="note-cell" style="cursor:pointer" onclick="${openCard}">${mgrFlag?`<span class="mgr-flag" style="position:static;display:inline-grid;margin-right:5px;vertical-align:middle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg></span>`:''}<span style="font-size:12px;color:var(--ink-soft)">${notePreview}</span></td>
@@ -2372,16 +3244,16 @@ function renderAdmin(){
         <button class="icon-btn del" onclick="delCategory(${ci})" title="ลบหมวดนี้"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg></button>`:''}
       </div>
       <div class="admin-item" style="background:var(--paper);font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);font-weight:650">
-        <span>รหัส</span><span>รายการ (Detail)</span><span>ผลลัพธ์</span><span>รหัสบัญชี GL (คั่นด้วย ,)</span><span>TIPS</span><span>Owner (${periodLabel(curPeriod)})</span><span></span>
+        <span>รหัส</span><span>รายการ (Detail)</span><span>ผลลัพธ์</span><span>รหัสบัญชี GL (คั่นด้วย ,)</span><span>TIPS</span><span>ผู้รับผิดชอบประจำ</span><span>กำหนดส่ง</span><span></span>
       </div>
       ${cat.items.map((it,ii)=>{
-        const ownerVal=statusOf(curPeriod)[it.code]?.owner||'';
+        const ownerVal=it.owner||'';
         return `
         <div class="admin-item">
           <input value="${it.code}" ${canEditCfg?`onchange="config[${ci}].items[${ii}].code=this.value"`:ro}>
           <input value="${it.detail.replace(/"/g,'&quot;')}" ${canEditCfg?`onchange="config[${ci}].items[${ii}].detail=this.value"`:ro}>
           <input value="${it.output||''}" ${canEditCfg?`onchange="config[${ci}].items[${ii}].output=this.value"`:ro}>
-          <input value="${(it.gl||[]).join(', ')}" placeholder="เช่น 280100, 110100" ${canEditCfg?`onchange="config[${ci}].items[${ii}].gl=this.value.split(',').map(s=>s.trim()).filter(Boolean)"`:ro}>
+          <input value="${glArr(it.gl).join(', ')}" placeholder="เช่น 280100, 110100" ${canEditCfg?`onchange="config[${ci}].items[${ii}].gl=this.value.split(',').map(s=>s.trim()).filter(Boolean)"`:ro}>
           <div class="tips-cell">
             <button class="tips-btn ${it.tips?'has-content':''}" onclick="openTipsEdit(${ci},${ii})" title="${it.tips?'แก้ไข TIPS':'เพิ่ม TIPS'}">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17a1 1 0 001 1h6a1 1 0 001-1v-2.3A7 7 0 0012 2z"/></svg>${it.tips?'มี TIPS':'เพิ่ม'}
@@ -2390,7 +3262,14 @@ function renderAdmin(){
               <input type="checkbox" class="tips-check" ${it.tipsShow?'checked':''} ${it.tips?'':'disabled'} onchange="config[${ci}].items[${ii}].tipsShow=this.checked">
             </div>
           </div>
-          <select class="owner-select" onchange="setItemOwner('${it.code}',this.value)" title="ผู้รับผิดชอบของงวด ${periodLabel(curPeriod)} — เดือนอื่นเลือกแยกได้">${ownerOptions(ownerVal)}</select>
+          <select class="owner-select" onchange="config[${ci}].items[${ii}].owner=this.value" title="ผู้รับผิดชอบประจำรายการนี้ (บันทึกเมื่อกดปุ่ม 'บันทึกการตั้งค่า')">${ownerOptions(ownerVal)}</select>
+          ${canEditCfg?`<div style="display:flex;flex-direction:column;gap:4px">
+            <select class="owner-select" onchange="config[${ci}].items[${ii}].due=this.value?Number(this.value):''" title="วันครบกำหนดส่ง (บันทึกเมื่อกดปุ่ม 'บันทึกการตั้งค่า')">${dueOptionsHtml(it.due)}</select>
+            <select class="owner-select" onchange="config[${ci}].items[${ii}].dueMode=this.value" title="ครบกำหนดภายในเดือนของงวด หรือเดือนถัดไป">
+              <option value="" ${(it.dueMode||'')!=='next'?'selected':''}>ภายในเดือนนั้น</option>
+              <option value="next" ${(it.dueMode||'')==='next'?'selected':''}>ภายในเดือนถัดไป</option>
+            </select>
+          </div>`:`<span style="font-size:12.5px;color:var(--ink-soft)">${it.due?('ทุกวันที่ '+it.due+((it.dueMode||'')==='next'?' (เดือนถัดไป)':'')):'—'}</span>`}
           ${canEditCfg?`<button class="icon-btn del" onclick="delItem(${ci},${ii})" title="ลบ"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg></button>`:'<span></span>'}
         </div>`;
       }).join('')}`;
@@ -2531,7 +3410,11 @@ async function updateCompany(i,key,val){
   }
   await saveCompaniesLocal();
   ensureValidCompany();   // ถ้ายังไม่ได้เลือกบริษัท (เช่นเพิ่งเพิ่มบริษัทแรก) ให้เลือกให้อัตโนมัติ
-  buildCompanySel(); applyCompanyLabel(); renderCompany();
+  buildCompanySel(); applyCompanyLabel();
+  // sync ใหม่เสมอหลังแก้ไขบริษัท เพื่อให้ระบบดึง/seed config ของบริษัทที่เพิ่งตั้งค่าให้ถูกต้อง
+  // (ถ้าไม่ sync ตรงนี้ กรณีเพิ่มบริษัทแรกแล้วยังไม่เคยมี config เลย จะเจอเช็คลิสต์ว่างเปล่าค้างไว้จนกว่าจะสลับบริษัทหรือรีโหลดหน้า)
+  if(curCompany){ await syncFromSheet(); renderDash(); renderCheck(); }
+  renderCompany();
 }
 async function removeCompany(i){
   if(CURRENT_ROLE()!=='supervisor'){toast('คุณไม่มีสิทธิ์ลบบริษัท',true);return;}
@@ -3000,35 +3883,8 @@ async function saveRulesLocal(){
 
 /* ---------------- Connect ---------------- */
 function openConnect(){
-  document.getElementById('apiInput').value=API_URL;
-  renderEmbedBanner();
   openModal('connectModal');
 }
-function renderEmbedBanner(){
-  const el=document.getElementById('embedStatusBanner'); if(!el)return;
-  if(usingEmbeddedURL){
-    el.innerHTML=`<div class="embed-banner on">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-      <div><b>ไฟล์นี้ฝัง URL ของโรงงานไว้แล้ว</b>ทุกคนที่เปิดไฟล์นี้จะเชื่อมต่อ Sheet เดียวกันอัตโนมัติ โดยไม่ต้องกรอก URL เอง</div>
-    </div>`;
-  }else{
-    el.innerHTML=`<div class="embed-banner off">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg>
-      <div><b>ไฟล์นี้ยังไม่ได้ฝัง URL</b>แต่ละคนต้องกรอก URL เอง (หรือฝังไว้ในไฟล์ให้ทีมด้านล่าง)</div>
-    </div>`;
-  }
-}
-async function connectSheet(){
-  const url=document.getElementById('apiInput').value.trim();
-  if(!url){toast('กรุณาวาง URL',true);return;}
-  API_URL=url;localStorage.setItem('mpl_api',url);
-  closeModal('connectModal');setConn();
-  toast('กำลังเชื่อมต่อ...');await syncFromSheet();
-  renderDash();renderCheck();toast('เชื่อมต่อ Google Sheet สำเร็จ');
-  // ถ้ายังไม่ login ให้เช็คว่าควรโชว์ฟอร์มตั้งค่าเริ่มต้นครั้งแรก (Sheet ใหม่ยังไม่มีสมาชิก) หรือฟอร์ม login ปกติ
-  if(!currentSession){ await checkFirstTimeSetup(); }
-}
-function disconnectSheet(){API_URL='';localStorage.removeItem('mpl_api');closeModal('connectModal');setConn();renderDash();toast('เปลี่ยนเป็นโหมดทดลอง');}
 
 /* ---------------- Download setup files (สำหรับส่งต่อให้ทีม/โรงงานอื่น) ---------------- */
 // เก็บเป็น base64 เพื่อฝังไฟล์ Code.gs และคู่มือ (ซึ่งไม่ได้อยู่ในหน้าเว็บนี้) ไว้ในตัวแอปเอง
@@ -3076,37 +3932,10 @@ function getCleanAppHtml(){
   clone.querySelectorAll('.overlay.show').forEach(el=>el.classList.remove('show'));
   clone.querySelectorAll('.toast.show').forEach(el=>el.classList.remove('show'));
   clone.querySelectorAll('input, textarea').forEach(el=>{
-    const orig = document.getElementById(el.id);
-    // เคลียร์ค่าที่พิมพ์ไว้ใน modal ต่างๆ (URL, ข้อความ TIPS ฯลฯ) ไม่ให้ติดไปกับไฟล์ที่แจกต่อ
-    if(el.id==='apiInput'||el.id==='linkInput'||el.id==='tipsEditText'||el.id==='editRuleDesc') el.value='';
+    // เคลียร์ค่าที่พิมพ์ไว้ใน modal ต่างๆ (ข้อความ TIPS ฯลฯ) ไม่ให้ติดไปกับไฟล์ที่แจกต่อ
+    if(el.id==='linkInput'||el.id==='tipsEditText'||el.id==='editRuleDesc') el.value='';
   });
   return '<!DOCTYPE html>\n' + clone.outerHTML;
-}
-
-// แทนที่บรรทัด const FACTORY_API_URL = "..."; ในซอร์สโค้ดของหน้านี้ด้วยค่าใหม่ที่ระบุ
-// ใช้ regex ที่เจาะจงมาก (จับเฉพาะรูปแบบการประกาศตัวแปรนี้เท่านั้น) เพื่อไม่ให้ไปแก้ข้อความอื่นโดยไม่ตั้งใจ
-function buildAppHtmlWithEmbeddedUrl(url){
-  const html = getCleanAppHtml();
-  const pattern = /const FACTORY_API_URL = "[^"]*";/;
-  if(!pattern.test(html)){
-    toast('ไม่พบตำแหน่งสำหรับฝัง URL ในไฟล์ กรุณาตรวจไฟล์ต้นฉบับ',true);
-    return null;
-  }
-  return html.replace(pattern, `const FACTORY_API_URL = "${url.replace(/"/g,'&quot;')}";`);
-}
-function downloadEmbeddedApp(){
-  const url=document.getElementById('apiInput').value.trim() || API_URL;
-  if(!url){toast('กรุณากรอก URL ก่อนฝังลงไฟล์',true);return;}
-  const html = buildAppHtmlWithEmbeddedUrl(url);
-  if(!html)return;
-  triggerDownload(new Blob([html], {type:'text/html;charset=utf-8'}), 'checklist_app.html');
-  toast('ฝัง URL ลงไฟล์และดาวน์โหลดแล้ว — แจกไฟล์นี้ให้ทีมในโรงงานนี้ได้เลย');
-}
-function downloadResetApp(){
-  const html = buildAppHtmlWithEmbeddedUrl('');
-  if(!html)return;
-  triggerDownload(new Blob([html], {type:'text/html;charset=utf-8'}), 'checklist_app.html');
-  toast('รีเซ็ต URL แล้ว — ไฟล์นี้สะอาด พร้อมส่งให้โรงงาน/บริษัทอื่น');
 }
 
 function setConn(){
@@ -3122,6 +3951,14 @@ document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{
 let toastT;
 function toast(msg,err){const t=document.getElementById('toast');document.getElementById('toastText').textContent=msg;t.style.background=err?'var(--red)':'var(--ink)';t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2600);}
 async function refreshAll(){await syncFromSheet();renderDash();toast('รีเฟรชข้อมูลแล้ว');}
+// ส่งเมลเตือนกำหนดส่งเดี๋ยวนี้ (เฉพาะหัวหน้าแผนก) — เรียก backend ให้ส่งเมลให้ผู้รับผิดชอบที่ค้างงานของเดือนปัจจุบัน
+async function sendRemindersNow(){
+  if(CURRENT_ROLE()!=='supervisor'){ toast('เฉพาะหัวหน้าแผนกเท่านั้น',true); return; }
+  if(!confirm('ส่งเมลสรุป "งานค้างทั้งหมด" ของเดือนนี้ให้ผู้รับผิดชอบตอนนี้เลยไหม?\n(กดเองจะส่งงานค้างทุกรายการที่ยังไม่เสร็จ — ส่วนตัวแจ้งเตือนอัตโนมัติรายวันยังเตือนเฉพาะที่ใกล้ครบ ≤3 วัน/เกินกำหนดเหมือนเดิม)')) return;
+  const r=await apiCall('sendReminders',{dryRun:false,mode:'all'}); // กดเอง = ส่งงานค้างทั้งหมด
+  if(r&&r.ok){ toast(`ส่งเมลแล้ว ${r.sent||0} ฉบับ (งวด ${r.period||''})`); }
+  else { toast('ส่งเมลไม่สำเร็จ — ตรวจว่า Deploy backend ใหม่แล้วและอนุญาตสิทธิ์ส่งเมล',true); }
+}
 
 /* ---------------- Init ---------------- */
 /* ---------------- Auth: hashing, login, reset, session ---------------- */
@@ -3134,7 +3971,11 @@ function findMemberByEmail(email){
   const e=(email||'').trim().toLowerCase();
   return members.find(m=>(m.email||'').trim().toLowerCase()===e);
 }
+// ---- Loading overlay helpers ----
+function showLoading(msg){const o=document.getElementById('loadingOverlay');if(!o)return;const m=document.getElementById('loadingMsg');if(m&&msg)m.textContent=msg;o.classList.add('show');}
+function hideLoading(){const o=document.getElementById('loadingOverlay');if(o)o.classList.remove('show');}
 function hideAllLoginForms(){
+  hideLoading(); // เห็นฟอร์ม login/สมัคร = ต้องไม่มีหน้าโหลดค้างอยู่
   document.getElementById('loginFormWrap').style.display='none';
   document.getElementById('resetFormWrap').style.display='none';
   document.getElementById('setupFormWrap').style.display='none';
@@ -3155,9 +3996,9 @@ async function checkFirstTimeSetup(){
   else { showLoginForm(); }
 }
 async function loginOpenConnect(){ await syncFromSheet(); openConnect(); }
-function loginErr(msg){const el=document.getElementById('loginError');el.textContent=msg;el.style.display='block';}
-function resetErr(msg){const el=document.getElementById('resetError');el.textContent=msg;el.style.display='block';}
-function setupErr(msg){const el=document.getElementById('setupError');el.textContent=msg;el.style.display='block';}
+function loginErr(msg){hideLoading();const el=document.getElementById('loginError');el.textContent=msg;el.style.display='block';}
+function resetErr(msg){hideLoading();const el=document.getElementById('resetError');el.textContent=msg;el.style.display='block';}
+function setupErr(msg){hideLoading();const el=document.getElementById('setupError');el.textContent=msg;el.style.display='block';}
 
 async function attemptLogin(){
   document.getElementById('loginError').style.display='none';
@@ -3165,9 +4006,11 @@ async function attemptLogin(){
   const pw=document.getElementById('loginPassword').value;
   if(!email||!pw){loginErr('กรุณากรอกอีเมลและรหัสผ่าน');return;}
   if(!API_URL){loginErr('กรุณาเชื่อมต่อ Google Sheet ก่อนเข้าสู่ระบบ');return;}
+  showLoading('กำลังตรวจสอบข้อมูลเข้าสู่ระบบ');
   await syncFromSheet(); // ดึงรายชื่อ+รหัสผ่านล่าสุดจาก Sheet ก่อนตรวจสอบเสมอ กันรหัสผ่านเก่าค้างในเครื่อง
   // เผื่อมาถึงหน้า login โดยตรงทั้งที่ Sheet ยังไม่มีสมาชิกเลย ให้พาไปตั้งค่าเริ่มต้นครั้งแรกแทน
   if(members.length===0){
+    hideLoading();
     toast('ยังไม่มีสมาชิกในระบบนี้ — กรุณาตั้งค่าบัญชีแรกก่อน');
     document.getElementById('setupEmail').value=email;
     showSetupForm();
@@ -3181,6 +4024,7 @@ async function attemptLogin(){
   if(!m.authRole){loginErr('บัญชีนี้ยังไม่ได้กำหนดสิทธิ์ใช้งาน กรุณาติดต่อหัวหน้าแผนก');return;}
   currentSession={id:m.id,name:m.name,email:m.email,authRole:m.authRole,companies:m.companies||[]};
   sessionStorage.setItem('mpl_session',JSON.stringify(currentSession));
+  showLoading('ยินดีต้อนรับ '+(m.name||'')+' · กำลังโหลดข้อมูล');
   await enterApp();
 }
 async function attemptReset(){
@@ -3272,25 +4116,31 @@ function applyRoleUIRestrictions(){
 }
 
 async function enterApp(){
-  document.getElementById('loginScreen').style.display='none';
-  document.getElementById('appLayout').style.display='flex';
-  renderUserChip();
-  applyRoleUIRestrictions();
-  // ดึงข้อมูลล่าสุดจาก Sheet อีกครั้งหลัง login แล้ว re-render ทุกหน้าใหม่
-  // (จำเป็น เพราะตอน init() ก่อน login อาจ render ด้วยข้อมูลเปล่า/ไม่ครบ ทำให้รายการที่เคยติ๊กและ TB ไม่ขึ้น)
-  await syncFromSheet();
-  ensureValidCompany();      // เลือกบริษัทที่ผู้ใช้คนนี้มีสิทธิ์เห็น
-  buildCompanySel();         // สร้าง dropdown บริษัทตามสิทธิ์
-  applyCompanyLabel();
-  await syncChecklistCodesToCurrentCompany();
-  renderDash();
-  renderCheck();
-  renderUploadStatus();
-  // ผู้จัดการ (View only) ให้เริ่มที่แดชบอร์ดเสมอ ป้องกันค้างอยู่หน้าที่เข้าไม่ได้จากเซสชันก่อน
-  if(!canAccessPage(document.querySelector('#nav button.active')?.dataset.page)) goPage('dash');
+  showLoading('กำลังโหลดข้อมูล');
+  try{
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('appLayout').style.display='flex';
+    renderUserChip();
+    applyRoleUIRestrictions();
+    // ไม่ต้อง syncFromSheet ซ้ำตรงนี้ — ทั้ง attemptLogin และ init() ดึงข้อมูลให้ล่าสุดก่อนเรียก enterApp อยู่แล้ว
+    // (เดิมดึงซ้ำอีกรอบทำให้ตอน login หมุนนานเป็นเท่าตัวโดยไม่จำเป็น)
+    ensureValidCompany();      // เลือกบริษัทที่ผู้ใช้คนนี้มีสิทธิ์เห็น
+    buildCompanySel();         // สร้าง dropdown บริษัทตามสิทธิ์
+    applyCompanyLabel();
+    await syncChecklistCodesToCurrentCompany();
+    renderDash();
+    renderCheck();
+    renderUploadStatus();
+    // ผู้จัดการ (View only) ให้เริ่มที่แดชบอร์ดเสมอ ป้องกันค้างอยู่หน้าที่เข้าไม่ได้จากเซสชันก่อน
+    if(!canAccessPage(document.querySelector('#nav button.active')?.dataset.page)) goPage('dash');
+  } finally {
+    hideLoading(); // ปิดหน้าโหลดเสมอ แม้ระหว่างทางจะมี error
+  }
 }
 
 (async function init(){
+  // ถ้ามีเซสชันเดิมค้างอยู่ ให้โชว์หน้าโหลดทันทีตั้งแต่เปิดหน้า จะได้ไม่เห็นหน้า login แวบก่อนเข้าแอป
+  if(currentSession && currentSession.authRole) showLoading('กำลังเข้าสู่ระบบ');
   buildPeriodSel();buildCompanySel();setConn();applyCompanyLabel();
   // restore sidebar collapsed state
   if(localStorage.getItem('mpl_sidebar')==='1'){document.getElementById('sidebar').classList.add('collapsed');document.querySelector('#hideBtn svg path').setAttribute('d','M9 18l6-6-6-6');}
@@ -3300,32 +4150,6 @@ async function enterApp(){
   if(currentSession && currentSession.authRole){ await enterApp(); }
   else { await checkFirstTimeSetup(); } // ถ้ายังไม่ login ให้เช็คว่าควรโชว์ฟอร์ม setup ครั้งแรกหรือฟอร์ม login ปกติ
 })();
-
-function ensurePeriodNAButton(){
-  if(!canCloseUnplanned()) return;
-  const modal=document.querySelector('.modal.show,.modal.open,[role="dialog"]:not([hidden])');
-  if(!modal) return;
-  const footer=modal.querySelector('.modal-footer') || [...modal.querySelectorAll('div')].find(d=>{
-    const t=d.textContent||'';
-    return t.includes('ตกลง (อนุมัติ)') && t.includes('ปิด');
-  });
-  if(!footer || footer.querySelector('.btn-period-na')) return;
-  const code=(typeof activeCode!=='undefined' && activeCode) ? activeCode :
-             (typeof selectedCode!=='undefined' && selectedCode) ? selectedCode : '';
-  if(!code) return;
-  const b=document.createElement('button');
-  b.type='button';
-  b.className='btn-period-na'+(isPeriodDisabled(code)?' active':'');
-  b.textContent=isPeriodDisabled(code)?'เปิดช่องกลับเข้าแผน':'ไม่มีในแผน (ปิดช่อง)';
-  b.onclick=async function(){
-    await togglePeriodDisabled(code);
-    const m=document.querySelector('.modal.show,.modal.open,[role="dialog"]:not([hidden])');
-    if(m){ const x=m.querySelector('.btn-period-na'); if(x){x.classList.toggle('active',isPeriodDisabled(code));x.textContent=isPeriodDisabled(code)?'เปิดช่องกลับเข้าแผน':'ไม่มีในแผน (ปิดช่อง)';}}
-  };
-  footer.insertBefore(b,footer.firstChild);
-}
-const _naObserver=new MutationObserver(()=>setTimeout(ensurePeriodNAButton,0));
-window.addEventListener('DOMContentLoaded',()=>_naObserver.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','style']}));
 
 </script>
 </body>
